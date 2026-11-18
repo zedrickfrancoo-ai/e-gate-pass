@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="E-Gate Pass">
+<link rel="apple-touch-icon" href="icon-192.png"><link rel="icon" type="image/png" href="icon-192.png">
+
+<title>E-Gate Pass – Tanauan Factory</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap">
+<style>
+:root{--bg:#ffffff;color-scheme:light;--card:#fff;--ink:#2f261d;--mut:#705f4c;--acc:#63513d;--on:#fff;--line:#e3dfda;--soft:#f6f3f0;--tint:#d0cbc5;--inp:#fff;--leaf:var(--acc);--sun:var(--acc);--ok:var(--acc);--bad:var(--ink);--warn:var(--acc);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Nestlé Text","Nestle Text","Source Sans 3","Segoe UI",system-ui,Arial,sans-serif}
+h2,.no,.tile b,.hero h2{font-weight:700;letter-spacing:-.01em}
+header{background:#fff;border-bottom:1px solid #e3dfda;padding:14px 28px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+header img{height:50px;max-width:100%}
+.ttl{flex:1;min-width:170px;padding-left:18px;border-left:1px solid #d0cbc5}.ttl h1{margin:0;font-size:18px;color:#63513d;font-weight:700}.ttl p{margin:0;color:#705f4c;font-size:13px}
+.who{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+main{max-width:1040px;margin:0 auto;padding:24px 18px 60px}
+nav{display:flex;margin-bottom:22px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tab{padding:10px 4px;margin-right:24px;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;color:var(--mut);cursor:pointer;font:inherit;font-weight:500}
+.tab.on{color:var(--ink);border-bottom-color:var(--acc);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px}
+.warnb{border:1.5px dashed var(--acc);background:var(--soft);font-weight:500}
+h2{margin:0 0 12px;font-size:23px;line-height:1.2}h3{margin:20px 0 8px;font-size:14px;color:var(--acc);font-weight:700}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:30px 32px;margin-bottom:20px;color:var(--ink);background:#fff;border:1px solid var(--line)}
+.hero h2{color:var(--acc);font-size:30px;line-height:1.15;margin:0 0 6px;max-width:560px}.hero p{margin:0;max-width:480px;color:var(--mut)}
+.hero.big{padding:46px 34px}.hero.big h2{font-size:40px}
+.lf{position:absolute;right:0;bottom:-12px;width:280px;color:var(--tint);pointer-events:none}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;color:var(--mut);font-size:13px;font-weight:500}
+.tile b{display:block;font-size:42px;line-height:1.05;color:var(--acc)}
+.tile.hot{border:1.5px solid var(--acc)}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+label{display:block;font-size:13px;color:var(--mut);font-weight:500}
+input,select,textarea{width:100%;padding:9px 12px;border:1px solid var(--tint);border-radius:10px;background:var(--inp);color:var(--ink);font:inherit;margin-top:4px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.btn{padding:10px 22px;border:1.5px solid var(--acc);border-radius:99px;background:var(--acc);color:var(--on);cursor:pointer;font:inherit;font-weight:700}
+.btn.o{background:transparent;color:var(--acc);border-color:var(--tint)}.btn.bad{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.s{padding:5px 14px;font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--mut);font-weight:500;border-bottom-color:var(--tint)}
+tbody tr:hover{background:var(--soft)}
+td input{margin:0;min-width:70px}
+.chip{display:inline-block;padding:1px 11px;border-radius:99px;font-size:12px;font-weight:700;border:1.5px solid var(--acc);color:var(--acc);white-space:nowrap}
+.Pending{border-style:dashed}.Approved{background:var(--soft)}.Released{background:var(--acc);color:var(--on)}.Closed,.NR{border-color:var(--tint);color:var(--mut)}.FR{border-color:var(--tint)}
+.Rejected,.Voided{border:3px double var(--ink);color:var(--ink)}.Overdue{background:var(--ink);border-color:var(--ink);color:var(--card)}
+.empty{color:var(--mut);text-align:center;padding:30px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px 18px}.kv b{display:block;font-size:12px;color:var(--mut);font-weight:500}
+.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.no{font-size:32px;color:var(--acc);line-height:1.15}
+.log{font-size:13px;color:var(--mut);margin:0;padding-left:18px}
+.sig{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:28px}.sig div{border-top:1px solid var(--ink);padding-top:4px;font-size:12px;color:var(--mut)}
+.seg{display:flex;margin-top:4px}.seg-b{flex:1;padding:9px 10px;border:1.5px solid var(--tint);background:var(--inp);color:var(--ink);cursor:pointer;font:inherit;font-weight:500}.seg-b:first-child{border-radius:99px 0 0 99px}.seg-b:last-child{border-radius:0 99px 99px 0}.seg-b.on{background:var(--acc);color:var(--on);border-color:var(--acc);font-weight:700}
+.steps{display:flex;margin:18px 0 6px}.st{flex:1;text-align:center;font-size:12px;font-weight:500;color:var(--mut)}
+.st i{display:block;width:28px;height:28px;border-radius:50%;background:var(--soft);border:1.5px solid var(--tint);margin:0 auto 5px;line-height:25px;font-style:normal;color:var(--mut)}
+.st.d i{background:var(--acc);border-color:var(--acc);color:var(--on)}.st.c i{background:var(--card);border-color:var(--acc);color:var(--acc);font-weight:700}.st.d,.st.c{color:var(--ink);font-weight:700}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--card);padding:10px 20px;border-radius:99px;display:none;z-index:9;font-weight:500}
+.note{font-size:13px;color:var(--mut)}
+@media print{body *{visibility:hidden}.pa,.pa *{visibility:visible}.pa{position:absolute;left:0;top:0;width:100%;border:0}.np{display:none!important}}
+.lg{display:grid;grid-template-columns:1fr 1.05fr;min-height:calc(100vh - 160px);border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.lg-f{padding:52px 48px;display:flex;flex-direction:column;justify-content:center;max-width:520px;width:100%;margin:0 auto}
+.lg-f h2{font-size:30px;margin-bottom:18px}
+.lg-b{position:relative;overflow:hidden;background:#fff;border-right:1px solid var(--line);color:var(--ink);padding:48px 44px;display:flex;flex-direction:column;justify-content:flex-end}
+.lg-b h2{color:var(--acc);font-size:38px;line-height:1.15;margin:0 0 10px;max-width:440px;position:relative}
+.lg-b p{margin:0;max-width:380px;color:var(--mut);font-size:18px;position:relative}
+.lg-b .lf{top:-14px;bottom:auto;right:-24px;width:380px;color:var(--tint)}
+.dm{display:flex;justify-content:space-between;gap:10px;width:100%;text-align:left;padding:10px 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);cursor:pointer;font:inherit;font-weight:600}
+.dm:hover{background:var(--soft)}
+@media(max-width:780px){.lg{grid-template-columns:1fr}.lg-b{order:-1;min-height:230px;padding:30px 26px;border-right:0;border-bottom:1px solid var(--line)}.lg-b h2{font-size:28px}.lg-f{padding:30px 22px}}
+.pl{display:block}.pr{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) auto auto;gap:10px 14px;align-items:center;padding:12px 10px;border-bottom:1px solid var(--line);border-left:4px solid var(--tint)}
+.pr.g1{border-left-color:var(--acc);background:var(--soft)}.pr.g2{border-left-style:dashed}.pr small{display:block;color:var(--mut);font-size:12px}.pr .n2{color:var(--mut);font-size:13px}
+.gh{font-weight:700;color:var(--acc);margin:18px 0 4px;font-size:14px;cursor:default}details.g3>.gh{cursor:pointer}.gh i,.fc i{font-style:normal;background:var(--soft);border:1px solid var(--tint);border-radius:99px;padding:0 8px;font-size:12px;margin-left:4px}
+.fcs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}.fc{border:1.5px solid var(--tint);background:var(--inp);color:var(--ink);border-radius:99px;padding:5px 12px;font:inherit;font-size:13px;cursor:pointer}.fc.on{background:var(--acc);color:var(--on);border-color:var(--acc);font-weight:700}.fcs select{width:auto;margin:0 0 0 auto}
+details.md summary{cursor:pointer;color:var(--acc);font-weight:700;margin:18px 0 6px}.na{margin-top:10px;padding:10px 14px;border-radius:12px;background:var(--soft);border:1px solid var(--line);font-weight:700}
+.il{margin:6px 0 0;padding-left:22px}.il li{font-size:18px;font-weight:600;padding:3px 0}.vd{font-size:18px!important;font-weight:700}
+@media(max-width:700px){.pr{grid-template-columns:1fr auto}.pr .n2{grid-column:1/-1}.pr>div:nth-child(3){grid-column:1}}
+@media print{.fcs{display:none!important}}
+.apw{position:relative}.apr{display:none;position:absolute;left:0;right:0;z-index:20;background:var(--card);border:1px solid var(--tint);border-radius:12px;margin-top:2px;max-height:240px;overflow:auto;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.apo{display:block;width:100%;text-align:left;padding:9px 12px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);font:inherit;cursor:pointer}.apo:hover:not(:disabled){background:var(--soft)}.apo:disabled{opacity:.5;cursor:not-allowed}.apo span{display:block;font-size:12px;color:var(--mut)}
+.vd{padding:14px 16px;border-radius:12px;margin:12px 0;line-height:1.4}.vd.ok{border:2px solid #14532d}.vd.no{border:2px solid #7f1d1d}.vd.wa{border:2px solid #7a4b00}
+.vc-top{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.vc-st{display:flex;gap:14px;align-items:center;border-radius:16px;padding:16px 18px;margin:12px 0 14px;border:2px solid}.vc-st.ok{background:#e0f3e8;color:#14532d;border-color:#14532d}.vc-st.wa{background:#fff2cf;color:#7a4b00;border-color:#7a4b00}.vc-st.no{background:#fde6e6;color:#7f1d1d;border-color:#7f1d1d}
+.vc-ic{flex:none;width:48px;height:48px;border-radius:50%;background:currentColor;display:flex;align-items:center;justify-content:center}.vc-ic i{font-style:normal;color:#fff;font-size:26px;font-weight:700;line-height:1}
+.vc-st b{display:block;font-size:22px;line-height:1.15;letter-spacing:.01em}.vc-st span{display:block;font-size:14px;margin-top:3px;color:inherit}
+.vc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vc-c{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--soft)}.vc-c small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:700}.vc-c div{font-weight:600;word-break:break-word}.vc-c.w{grid-column:1/-1}
+.vc-it{width:100%;border-collapse:collapse;margin-top:6px}.vc-it td{padding:8px 6px;border-bottom:1px solid var(--line);font-size:15px}.vc-it td:first-child{width:28px;color:var(--mut)}
+.vc-tl{display:flex;margin:16px 0 4px}.vc-s{flex:1;text-align:center;font-size:12px;color:var(--mut)}.vc-s i{display:block;width:26px;height:26px;border-radius:50%;margin:0 auto 4px;line-height:23px;font-style:normal;border:1.5px solid var(--tint);background:var(--soft)}.vc-s.d{color:var(--ink);font-weight:700}.vc-s.d i{background:var(--acc);border-color:var(--acc);color:var(--on)}
+@media(max-width:420px){.vc-grid{grid-template-columns:1fr}}
+</style>
+<style>
+:root{--acc:#0a6b3b;--ink:#1f1f1f;--mut:#5b5650;--line:#e4e1dd;--soft:#f3f1ee;--tint:#cfcac3;--on:#fff}
+body{background:#f4f2ef}
+.topbar{position:sticky;top:0;z-index:20;height:43px;background:#bfb6aa;display:flex;align-items:center;justify-content:center;padding:0 12px 0 58px}
+.sbx{width:min(470px,46%)}.sbx input{margin:0;height:32px;border:0;border-radius:4px;padding:0 12px}
+#who{position:absolute;right:12px;top:0;height:43px;display:flex;gap:10px;align-items:center;font-size:13px}
+#who .me{display:flex;flex-direction:column;line-height:1.15;text-align:right}#who small{color:#4a443d}
+#who .btn.o{border-color:#6d655b;color:#2b2620}
+.av{width:30px;height:30px;border-radius:50%;border:1px solid #6d655b;display:grid;place-items:center;font-size:12px;font-weight:700}
+.bell{background:none;border:0;cursor:pointer;font-size:18px;position:relative}.bell i{position:absolute;top:-4px;right:-6px;background:#c0392b;color:#fff;border-radius:99px;font-size:10px;font-weight:700;line-height:16px;min-width:16px;font-style:normal}
+.side{position:fixed;left:0;top:43px;bottom:0;width:46px;background:#f4f2ef;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:20px;padding-top:16px;color:#444;font-size:18px;z-index:10}
+.shell{margin:16px 0 0 58px;background:#fff;border-radius:22px 0 0 0;border:1px solid var(--line);min-height:calc(100vh - 60px)}
+.shell>header{background:#ebe8e4;border:0;border-radius:22px 0 0 0;height:72px;padding:0 40px;flex-wrap:nowrap}
+.shell>header img{height:34px}.shell .ttl{border-left:0;padding-left:6px;flex:0 1 auto}.shell .ttl h1{font-size:21px;font-weight:400;color:var(--ink)}
+.ctx{margin-left:auto;font-size:14px;color:#222}
+.shell nav{padding:0 40px;margin:0;background:#fff}.tab{margin-right:30px;padding:14px 2px;font-size:15px;color:#222}.tab.on{border-bottom-color:var(--acc)}
+.crumb{padding:12px 40px;font-size:14px;color:#444}.crumb span{margin:0 8px}
+.shell main{max-width:1280px;margin:0;padding:8px 40px 60px}
+.see{color:var(--acc);font-weight:700;text-decoration:underline;font-size:14px;cursor:pointer;background:none;border:0}
+.hm{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) 300px;gap:32px;margin-bottom:30px}
+.sec h2{font-size:21px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+.ban{border-radius:4px;min-height:290px;padding:30px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.65)),linear-gradient(135deg,#63513d,#2f261d)}
+.ban h2{font-size:30px;line-height:1.15;margin:0 0 6px;display:block}.ban p{margin:0;max-width:480px}
+.dots{text-align:center;margin-top:12px;letter-spacing:10px;color:#777}
+.nw{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}.nw:hover{background:var(--soft)}
+.nw .th{width:70px;height:70px;flex:none;background:var(--soft);display:grid;place-items:center;font-size:26px;color:var(--acc)}.nw small{color:var(--mut)}
+.panel{background:#e6e3df;padding:24px;border-radius:0}.panel h3{font-size:17px;color:var(--ink);margin:0 0 12px}
+.panel hr{border:0;border-top:1px solid #bdb7b0;margin:20px 0}
+.fav{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);padding:10px 12px;margin-bottom:8px;cursor:pointer;font:inherit;color:var(--acc);font-weight:600}
+.bar{display:grid;grid-template-columns:80px 1fr 24px;gap:8px;align-items:center;font-size:13px;margin:6px 0}.bar i{display:block;height:8px;background:var(--acc);border-radius:4px;min-width:2px}.bar b{text-align:right}
+.fb{position:fixed;right:0;top:42%;writing-mode:vertical-rl;transform:rotate(180deg);background:var(--acc);color:#fff;border:0;border-radius:0 10px 10px 0;padding:18px 10px;font:700 14px inherit;cursor:pointer;z-index:30}
+@media(max-width:900px){.side,.sbx,#who .me{display:none}.shell{margin:0}.topbar{padding-left:12px}.hm{grid-template-columns:1fr}.shell>header,.shell nav,.crumb,.shell main{padding-left:16px;padding-right:16px}.ctx{display:none}}
+@media print{.topbar,.side,.fb,.shell>header,.crumb,.shell nav{display:none!important}.shell{margin:0;border:0}}
+</style><style>
+.topbar{position:relative}body{position:relative;min-height:100vh}
+.side{position:absolute;top:43px;bottom:0;left:0;align-items:stretch;gap:6px;padding:12px 0;overflow:hidden;transition:width .2s}
+.side button{background:none;border:0;cursor:pointer;color:#444;font-size:18px;display:flex;gap:12px;align-items:center;padding:8px 13px;width:100%;font-family:inherit}.side button:hover{background:#e6e3df}
+.side button span{display:none;font-size:14px}.side.open{width:170px}.side.open button span{display:inline}.side .bot{margin-top:auto}.side.open~.shell{margin-left:182px}
+.sbx{position:relative}.sgo{position:absolute;right:4px;top:3px;border:0;background:none;cursor:pointer;font-size:15px}
+.ctx{background:none;border:0;font:inherit;cursor:pointer}
+button.av{background:#fff;cursor:pointer}
+.dots{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:12px}.dot{width:12px;height:12px;border-radius:50%;border:1.5px solid #555;background:#fff;padding:0;cursor:pointer}.dot.on{background:#555}
+.tile,.bar{cursor:pointer}.tile:hover{border-color:var(--acc)}
+#pop{position:fixed;z-index:40;background:#fff;border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.18);border-radius:8px;padding:14px;min-width:250px;max-width:92vw;display:none}
+#pop .fav{margin-bottom:6px}#pop h3{margin:0 0 8px}
+</style><style>
+body.dk{--bg:#161513;--card:#201e1b;--ink:#efece8;--mut:#b9b2a8;--line:#3a3631;--soft:#2a2723;--tint:#4a453f;--inp:#262320;--acc:#4fbf84;--on:#111}
+body.dk .shell,body.dk .shell nav{background:#1b1a18}body.dk .shell>header{background:#2a2723}body.dk .side{background:#1b1a18}body.dk .side button,body.dk .ctx,body.dk .tab,body.dk .crumb{color:#ddd}
+body.dk .panel{background:#2a2723}body.dk .fav,body.dk #pop{background:#201e1b}body.dk .hero,body.dk .lg{background:#201e1b}body.dk .ttl h1{color:#eee}body.dk .btn.s.o{color:var(--acc)}
+.cfgn{font-size:12px;color:var(--mut)}
+</style><style>
+:root{--bg:#f3f6f8;--card:#fff;--ink:#17262f;--mut:#5a6b75;--acc:#0b5d7a;--line:#dde4e8;--soft:#eef3f6;--tint:#c5d0d6;--inp:#fff;--on:#fff}
+body{background:var(--bg);color:var(--ink);font-family:"Source Sans 3","Segoe UI",system-ui,Arial,sans-serif;min-height:0}
+header.top{background:#12303f;color:#fff;display:flex;align-items:center;gap:20px;padding:12px 28px;border:0;flex-wrap:wrap;height:auto}
+.brand b{font-size:21px;display:block;line-height:1.1}.brand span{font-size:12px;opacity:.8}
+header.top .sbx{flex:1;max-width:460px;margin:0 auto;min-width:200px}header.top .sbx input{margin:0;height:36px;border:0;border-radius:6px;padding:0 12px}
+#who{position:static;height:auto;display:flex;gap:12px;align-items:center;color:#fff;font-size:13px}#who small{color:#c9d6dd}
+#who .btn.o{border-color:#8fb0c0;color:#fff}
+.pill{background:#f4b942;color:#1c1c1c;border:0;border-radius:99px;padding:5px 14px;font:inherit;font-weight:700;cursor:pointer}
+nav#tabs{background:#fff;padding:0 28px;margin:0;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap}
+.tab{margin-right:26px;padding:14px 2px;font-size:15px;color:var(--mut)}.tab.on{color:var(--acc);border-bottom-color:var(--acc)}
+main{max-width:1200px;margin:0 auto;padding:22px 18px 60px}
+.card,.tile{border-radius:10px}.btn{border-radius:6px}.tile b{color:var(--acc)}.tile{cursor:pointer}.tile:hover{border-color:var(--acc)}
+.lf{display:none}.hm2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:18px;margin-bottom:18px}
+@media(max-width:900px){.hm2{grid-template-columns:1fr}header.top,nav#tabs{padding-left:14px;padding-right:14px}#who .me{display:none}}
+body.dk{--bg:#12171b;--card:#1b2227;--ink:#e8eef1;--mut:#9fb0ba;--line:#2c373e;--soft:#222b31;--tint:#3a4650;--inp:#222b31;--acc:#5ec0e6;--on:#0b1418}
+body.dk nav#tabs{background:#1b2227}body.dk .tab{color:#9fb0ba}body.dk .tab.on{color:#5ec0e6}body.dk .lg,body.dk .hero{background:#1b2227}
+</style><style>
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
+.mb{background:var(--card);color:var(--ink);border-radius:12px;max-width:560px;width:100%;max-height:92vh;overflow:auto;padding:22px}
+.vd{padding:10px 14px;border-radius:8px;font-weight:700;margin:12px 0}.vd.ok{background:#e0f3e8;color:#14532d}.vd.no{background:#fde6e6;color:#7f1d1d}.vd.wa{background:#fff2cf;color:#7a4b00}
+</style><style>
+/* v13 Nestlé look */
+:root{--bg:#f6f3ef;--card:#fff;--ink:#2f261d;--mut:#6f6254;--acc:#6b5744;--line:#e4ddd5;--soft:#f3eee8;--tint:#cdc3b8;--inp:#fff;--on:#fff}
+body{background:var(--bg)}
+header.top{background:#fff;color:var(--ink);border-bottom:1px solid var(--line);padding:10px 28px;gap:20px}
+.brand{display:flex;align-items:center;gap:16px}.brand img{height:50px;width:auto;display:block}
+.bt{padding-left:16px;border-left:1px solid var(--tint)}.brand b{font-size:19px;color:var(--acc)}.brand span{opacity:1;color:var(--mut)}
+header.top .sbx input{background:var(--soft);border:1px solid var(--line);color:var(--ink)}
+#who{color:var(--ink)}#who small{color:var(--mut)}#who .btn.o{border-color:var(--tint);color:var(--acc)}
+.pill{background:var(--acc);color:#fff}
+nav#tabs{border-bottom:1px solid var(--line)}.tab.on{color:var(--acc);border-bottom-color:var(--acc)}
+.card,.tile{border-radius:12px}.btn{border-radius:99px}.btn.o{color:var(--acc);border-color:var(--tint)}
+.live{font-size:12px;border:1px solid var(--tint);border-radius:99px;padding:2px 10px;color:var(--mut);white-space:nowrap}.live.on{color:#14532d;border-color:#14532d}.live.on:before{content:"\25CF  "}
+.lgo{width:min(340px,85%);margin-bottom:auto;display:block}.plogo{height:44px;width:auto;display:block;margin-bottom:10px}
+#qr{width:150px;height:150px;padding:6px;border:1px solid var(--line);border-radius:10px;background:#fff}#qr img,#qr canvas{display:block;width:100%!important;height:100%!important}
+.qrcap{text-align:center;font-size:12px;color:var(--mut);margin-top:6px;font-weight:600}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.fs{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--soft)}
+.fs i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--acc);color:var(--on);font-style:normal;font-weight:700;margin-bottom:6px}.fs b{display:block}.fs span{font-size:13px;color:var(--mut)}
+body.dk{--bg:#171310;--card:#221d19;--ink:#f1ece6;--mut:#bdb2a5;--line:#3b342d;--soft:#2b2520;--tint:#4d443b;--inp:#2a2420;--acc:#d8bf9d;--on:#1c1713}
+body.dk header.top,body.dk nav#tabs{background:#221d19}body.dk .brand img,body.dk .lgo,body.dk .plogo{background:#fff;border-radius:6px;padding:4px 8px}
+@media(max-width:700px){header.top{padding:10px 14px}.brand img{height:40px}.bt{padding-left:10px}}
+</style>
+<style>.pr .itm{grid-column:1/-1;font-size:14px;color:var(--ink);padding-top:2px}.pr .itm b{color:var(--acc)}#pmsg{margin:8px 0}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== SHARED DATABASE (Firebase Firestore) =====
+   Paste your Firebase web-app settings below. Leave apiKey empty to run on this device only. */
+const FIREBASE_CONFIG={apiKey:"AIzaSyAF0CQLUSleKhCplEJk0wQRVMfHRIFIy9o",authDomain:"e-passnpitf.firebaseapp.com",projectId:"e-passnpitf",storageBucket:"e-passnpitf.firebasestorage.app",messagingSenderId:"122323882721",appId:"1:122323882721:web:56e5769cb5663c217edda0"};
+async function openDb(){
+ if(!FIREBASE_CONFIG.apiKey||!window.firebase)return null;
+ try{if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);return firebase.firestore()}catch(e){console.error(e);return null}}
+</script>
+<style id="v15">
+/* v15: buttons */
+.btn{min-height:42px;transition:background .15s,transform .05s,box-shadow .15s}.btn.s{min-height:34px}
+.btn:active{transform:scale(.97)}.btn:disabled,.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #b9946a;outline-offset:2px}
+body{overflow-x:hidden}
+/* sign-in centred */
+body.is-login main{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 120px)}
+body.is-login .lg{width:100%;max-width:960px;min-height:0;margin:0 auto}
+body.is-login .lg-b{justify-content:center;align-items:center;text-align:center}
+body.is-login .lgo{margin:0 auto 26px}body.is-login .lg-b h2,body.is-login .lg-b p{margin-left:auto;margin-right:auto}
+body.is-login .lg-b h2{font-size:30px}body.is-login .lg-b p{font-size:16px}
+.pwwrap{position:relative;display:block}.pwwrap input{padding-right:70px;width:100%}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--acc,#6b5340);font-weight:700;padding:8px;min-height:36px;cursor:pointer}
+/* loading screen */
+#ldr{position:fixed;inset:0;z-index:999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px;transition:opacity .4s}
+#ldr.x{opacity:0;pointer-events:none}#ldr img{width:min(240px,60%)}#ldr b{font-size:20px;color:#6b5340}
+#ldr .sp{width:38px;height:38px;border:4px solid #e6ddd3;border-top-color:#6b5340;border-radius:50%;animation:v15s 1s linear infinite}#ldr.off .sp{display:none}
+@keyframes v15s{to{transform:rotate(360deg)}}#ldm{color:#5b5148;max-width:320px}#lda{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}#lda[hidden]{display:none}
+/* help button + tour + guide */
+#hfab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:50px;height:50px;border-radius:50%;border:0;background:#6b5340;color:#fff;font-size:24px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:60;cursor:pointer}
+body.is-login #hfab{display:none}
+#tour{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;display:flex;align-items:center;justify-content:center;padding:18px}
+#tour .tb{background:#fff;color:#2b2621;border-radius:18px;max-width:400px;width:100%;padding:24px}#tour h3{margin:0 0 8px;font-size:20px}#tour p{margin:0 0 14px;line-height:1.5}
+#tour .tr{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}#tour label{font-size:13px;display:flex;gap:6px;align-items:center}
+.gd{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line,#e6ddd3)}.gd:last-child{border:0}
+.gd i{flex:0 0 32px;height:32px;border-radius:50%;background:#6b5340;color:#fff;font-style:normal;display:flex;align-items:center;justify-content:center;font-weight:700}
+.gd span{line-height:1.5}.gd em{font-style:normal;font-size:20px;margin-right:4px}
+.stl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.stl div{border:1px solid var(--line,#e6ddd3);border-radius:12px;padding:10px 12px;line-height:1.4}
+.faq details{border-bottom:1px solid var(--line,#e6ddd3);padding:10px 0}.faq summary{cursor:pointer;font-weight:600;min-height:32px}.faq p{margin:8px 0 0;line-height:1.5}
+#hq{width:100%;margin:6px 0 10px}
+@media print{#hfab,#ldr,#tour{display:none!important}}
+/* phones */
+@media(max-width:900px){header.top{flex-wrap:wrap;gap:8px}.sbx{display:block!important;order:3;flex:1 1 100%;max-width:none;width:100%}.sbx input{width:100%}
+nav#tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}nav#tabs::-webkit-scrollbar{display:none}.tab{white-space:nowrap;flex:0 0 auto}
+main table{display:block;max-width:100%;overflow-x:auto}.pr .itm{word-break:break-word}}
+@media(max-width:780px){body.is-login main{align-items:flex-start;min-height:0}body.is-login .lg-b{min-height:0;padding:26px 20px 18px}body.is-login .lgo{width:min(220px,70%);margin-bottom:14px}body.is-login .lg-b h2{font-size:22px}body.is-login .lg-b p{font-size:14px}body.is-login .lg-f{padding:22px 20px 28px}body.is-login .lg-f .btn{width:100%}}
+@media(max-width:700px){.btn,.btn.s,.tab,.pill{min-height:44px}input,select,textarea{font-size:16px}header.top{padding-top:calc(10px + env(safe-area-inset-top));padding-left:calc(14px + env(safe-area-inset-left));padding-right:calc(14px + env(safe-area-inset-right))}body{padding-bottom:calc(70px + env(safe-area-inset-bottom))}#who{display:flex;gap:6px;align-items:center;flex-wrap:wrap}}
+</style>
+</head><body>
+<div id="ldr"><img id="ldi" alt="Nestlé"><b>E-Gate Pass</b><div class="sp"></div><div id="ldm">Loading E-Gate Pass…</div><div id="lda" hidden><button class="btn" onclick="location.reload()">Try again</button><button class="btn o" id="ldc">Continue anyway</button></div></div>
+
+<header class="top"><div class="brand"><img id="hlogo" alt="Nestlé"><div class="bt"><b>E-Gate Pass</b><span>Tanauan Factory</span></div><span id="live" class="live"></span></div><div class="sbx"><input id="gs" placeholder="Search by pass number, item, name or destination"></div><div id="who"></div></header>
+<nav id="tabs"></nav>
+<main><div id="main"></div></main>
+<div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const itx=(p,max)=>{const a=(p.items||[]).map(i=>((i.q||'')+' '+(i.u||'')+' '+(i.d||'')).replace(/\s+/g,' ').trim());const m=max||99;return a.length>m?a.slice(0,m).join('; ')+'; +'+(a.length-m)+' more':a.join('; ')};
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)},now=()=>new Date().toLocaleString('en-PH');
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2800)}
+const domOf=()=>((D.cfg&&D.cfg.domain)||'demo.local').toLowerCase();
+const okDomain=e=>/^[^@\s]+@[^@\s]+$/.test(e)&&e.toLowerCase().endsWith('@'+domOf());
+const deptNames=()=>[...new Set(D.users.filter(u=>u.role==='Approver'&&u.active).map(u=>u.dept).concat(U?[U.dept]:[]))].sort();
+const deptOpts=cur=>deptNames().map(d=>'<option'+(d===cur?' selected':'')+'>'+esc(d)+'</option>').join('');
+/* checksum (detects accidental damage / outside edits) */
+const h53=s=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0,c;i<s.length;i++){c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return(4294967296*(2097151&b)+(a>>>0)).toString(16)};
+const stab=x=>JSON.stringify(x,(k,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.keys(v).sort().reduce((a,b)=>(a[b]=v[b],a),{}):v);
+const seal=p=>{delete p.sum;p.sum=h53(stab(p))};
+const okSum=p=>{const c={...p};delete c.sum;return p.sum===h53(stab(c))};
+/* storage adapter: IT can replace load/save with calls to a company database or API */
+const SCHEMA=2,KEY='nestle_egp_v2';
+const Store={load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.schema&&d.passes&&d.users)return d}catch(e){}return seed()},save(d){try{localStorage.setItem(KEY,JSON.stringify(d));return true}catch(e){return false}}};
+const U0=(email,name,role,dept,title)=>({email,name,role,dept,title,active:true});
+function seed(){return{schema:SCHEMA,seq:{},changes:0,lastBackup:null,admin:[],passes:[],users:[
+ U0('maria.santos@demo.local','Maria Santos','Requester','Production','Staff'),U0('juan.delacruz@demo.local','Juan Dela Cruz','Requester','Warehouse','Staff'),
+ U0('ana.reyes@demo.local','Ana Reyes','Approver','Production','Department Head'),U0('pedro.garcia@demo.local','Pedro Garcia','Approver','Production','OIC'),
+ U0('liza.cruz@demo.local','Liza Cruz','Approver','Warehouse','Department Head'),U0('ramon.torres@demo.local','Ramon Torres','Security','Gate','Security Guard'),
+ U0('admin@demo.local','Records Admin','Admin','Admin','System Administrator')]}}
+let D=Store.load(),U=null,S={tab:'home',view:null,q:'',res:null};
+try{const e=sessionStorage.getItem('egp_u');U=D.users.find(u=>u.email===e&&u.active)||null}catch(e){}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+const commit=()=>{D.changes++;if(!Store.save(D))toast('Could not save: storage is full or blocked.')};
+const adminLog=a=>D.admin.push({t:now(),ts:Date.now(),w:U.name,a});
+/* rules */
+const canApprove=p=>!!U&&U.role==='Approver'&&p.dept===U.dept&&p.byId!==U.email&&p.status==='Pending'&&(!p.ap||p.ap===U.email);
+const canView=p=>U.role==='Admin'||U.role==='Security'||p.byId===U.email||(U.role==='Approver'&&p.dept===U.dept);
+const vis=()=>D.passes.filter(canView);
+const allowed=(a,p)=>({approve:canApprove(p),reject:canApprove(p),release:U.role==='Security'&&p.status==='Approved',return:U.role==='Security'&&p.status==='Released'&&p.rt==='For return',void:U.role==='Admin'&&p.status!=='Voided'&&p.status!=='Closed'})[a];
+const overdue=p=>p.status==='Released'&&p.rt==='For return'&&p.rd&&p.rd<addDays(today(),-((D.cfg&&D.cfg.grace)||0));
+const amt=p=>p.items.reduce((s,i)=>s+(+i.a||0),0);
+const net=p=>(p.gr!==''&&p.ta!==''&&p.gr!=null&&p.ta!=null)?(+p.gr-+p.ta):'';
+const nextNo=()=>{const y=new Date().getFullYear();let m=D.seq[y]||0;D.passes.forEach(p=>{const x=String(p.id).match(/-(\d{4})-(\d{5})$/);if(x&&+x[1]===y&&+x[2]>m)m=+x[2]});D.seq[y]=m+1;return ((D.cfg&&D.cfg.prefix)||'TNN')+'-'+y+'-'+String(m+1).padStart(5,'0')};
+const TABS={Requester:[['home','Home'],['new','New pass'],['mine','My passes']],Approver:[['home','Home'],['appr','Approvals'],['all','Department passes']],Security:[['home','Home'],['gate','Gate check'],['all','All passes']],Admin:[['home','Home'],['recs','Records & reports'],['users','Users'],['safe','Backup & integrity']]};
+const LEAF='<svg class="lf" viewBox="0 0 240 160" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="170" cy="110" rx="40" ry="22"/><ellipse cx="170" cy="110" rx="62" ry="34"/><ellipse cx="170" cy="110" rx="86" ry="46"/><ellipse cx="170" cy="110" rx="112" ry="58"/></g><g fill="currentColor"><circle cx="150" cy="104" r="7"/><circle cx="178" cy="100" r="6"/><circle cx="196" cy="112" r="5"/></g></svg>';
+function loginView(){$('#who').innerHTML='';$('#tabs').innerHTML='';
+ $('#main').innerHTML=`<div class="lg"><div class="lg-b">${LEAF}<h2>Every item that leaves Tanauan, on record.</h2><p>Request, approve, release and track gate passes in one place.</p></div>
+ <div class="lg-f"><h2>Sign in</h2><label>Company email<input id="em" type="email" autocomplete="username" placeholder="name@${esc(domOf())}"></label><label style="margin-top:10px">Password<input id="pw" type="password" autocomplete="current-password"></label><div class="row"><button class="btn" data-a="login">Sign in</button></div>
+ <p class="note" style="margin:24px 0 4px">Sign in with your company email address (@${esc(domOf())}) and your personal password. Personal email accounts are not accepted.</p></div></div>`}
+
+const G={Pending:'○',Approved:'✓',Released:'→',Closed:'●',Rejected:'✕',Voided:'⊘'};
+function chip(p){return `<span class="chip ${p.status}">${G[p.status]} ${p.status}</span> <span class="chip ${p.rt==='For return'?'FR':'NR'}">${p.rt==='For return'?'↺ ':''}${p.rt}</span>${overdue(p)?' <span class="chip Overdue">! Overdue</span>':''}${p.hv?' <span class="chip">₱ High value</span>':''}`}
+function tbl(a){return a.length?`<div class="sc"><table><thead><tr><th>E-Pass No.</th><th>Date</th><th>To</th><th>Dept.</th><th>Items</th><th>By</th><th>Status</th><th></th></tr></thead><tbody>${a.map(p=>`<tr><td><b>${p.id}</b></td><td>${esc(p.day)}</td><td>${esc(p.to)}</td><td>${esc(p.dept)}</td><td style="min-width:200px">${esc(itx(p,4))||'–'}</td><td>${esc(p.by)}</td><td>${chip(p)}</td><td><button class="btn o s np" data-v="${p.id}">Open</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No passes to show.</div>'}
+const backupDue=()=>{const l=D.lastBackup;return D.passes.length>0&&(!l||(Date.now()-l.ts>7*864e5&&D.changes>l.changes))};
+function home(){const v=vis(),c=f=>v.filter(f).length;
+ const T=[['Waiting for approval',c(p=>p.status==='Pending'),''],['Approved, ready for the gate',c(p=>p.status==='Approved'),''],['Out on loan',c(p=>p.status==='Released'&&p.rt==='For return'),''],['Overdue returns',c(overdue),'hot']];
+ const hr=new Date().getHours(),g=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+ const H={Requester:'File a pass for items leaving the factory, then follow its approval here.',Approver:'Review passes from your department before the items go out.',Security:'Check each approved pass against the truck before you release it.',Admin:'Keep the records complete, export reports and back up regularly.'}[U.role];
+ return `<div class="hero"><h2>${g}, ${esc(U.name.split(' ')[0])}</h2><p>${H}</p>${LEAF}</div>${U.role==='Admin'&&backupDue()?'<div class="card warnb">Backup due: records have changed since the last backup. Open Backup &amp; integrity to save a file.</div>':''}
+ <div class="tiles">${T.map((t,i)=>`<div class="tile ${t[2]}" data-f="${['Pending','Approved','Out','Overdue'][i]}"><b>${t[1]}</b>${t[0]}</div>`).join('')}</div>
+ <div class="card"><h2>Latest passes</h2>${tbl(v.slice(0,6))}</div>`}
+function form(){return `<div class="card"><h2>New gate pass</h2>
+<div class="g"><label>Department${U.role==='Requester'?'<select id="f_dept">'+deptOpts(U.dept)+'</select>':'<input id="f_dept" value="'+esc(U.dept)+'" readonly>'}</label><div class="apw"><label>Approver (search by name or company email)<input id="f_aps" autocomplete="off" placeholder="Type a name or email, or leave blank for any available approver"></label><input type="hidden" id="f_ap" value=""><div id="apr" class="apr"></div></div><label>Despatched to (company / person)<input id="f_to"></label><label>Destination no.<input id="f_no"></label>
+<label>Trucker<input id="f_tr"></label><label>Plate no.<input id="f_pl"></label><label>Order ref. no.<input id="f_on"></label><label>Order ref. date<input id="f_od" type="date"></label></div>
+<h3>References</h3><div class="g"><label>Supplier’s inv.<input id="f_inv"></label><label>Waybill<input id="f_way"></label><label>RR no.<input id="f_rr"></label><label>Debit note #<input id="f_db"></label><label>Cash/Check<input id="f_ch"></label><label>Others<input id="f_ot"></label></div>
+<h3>Items</h3><div class="sc"><table><thead><tr><th>Description</th><th>Other ref.</th><th>Qty</th><th>Unit</th><th>Amount (₱)</th><th></th></tr></thead><tbody id="items"></tbody></table></div>
+<div class="row"><button class="btn o s" data-a="addrow">+ Add item</button></div>
+<h3>Truckscale and return</h3><div class="g"><label>Gross (kg)<input id="f_gr" type="number"></label><label>Tare (kg)<input id="f_ta" type="number"></label>
+<div><div class="note" style="font-weight:600">Item status</div><div class="seg" role="group" aria-label="For return or not for return"><button type="button" class="seg-b on" data-a="rt0">Not for return</button><button type="button" class="seg-b" data-a="rt1">For return</button></div><input type="hidden" id="f_rt" value="Not for return"></div>
+<label id="rdw" style="display:none">Expected return date<input id="f_rd" type="date"></label></div>
+<label style="margin-top:12px">Remarks<textarea id="f_rm" rows="2"></textarea></label>
+<div class="row"><button class="btn" data-a="submit">Submit for approval</button></div></div>`}
+function addRow(){const r=document.createElement('tr');r.innerHTML='<td><input class="d" aria-label="Description"></td><td><input class="r"></td><td><input class="q" type="number" min="0"></td><td><input class="u" placeholder="pcs"></td><td><input class="a" type="number" min="0"></td><td><button class="btn o s" data-a="delrow" aria-label="Remove">×</button></td>';$('#items').appendChild(r)}
+function submit(){
+ const v=i=>$('#'+i).value.trim();
+ if(!v('f_to'))return toast('Enter who the items go to.');{const dd=(U.role==='Requester'&&v('f_dept'))||U.dept,ap=D.users.find(x=>x.email===v('f_ap'));if(v('f_ap')&&(!ap||ap.role!=='Approver'||ap.dept!==dd))return toast('Pick an approver from the department you selected.')}
+ const items=[...document.querySelectorAll('#items tr')].map(r=>({d:r.querySelector('.d').value.trim(),r:r.querySelector('.r').value.trim(),q:r.querySelector('.q').value,u:r.querySelector('.u').value.trim(),a:r.querySelector('.a').value})).filter(i=>i.d&&i.q);
+ if(!items.length)return toast('Add at least one item with a quantity.');if(v('f_ap')&&(D.users.find(x=>x.email===v('f_ap'))||{}).away)return toast('That approver is unavailable. Choose another.');if(v('f_gr')&&v('f_ta')&&+v('f_ta')>+v('f_gr'))return toast('Tare cannot be greater than gross.');if(v('f_rt')==='For return'&&v('f_rd')<today())return toast('Return date cannot be in the past.');
+ const fr=v('f_rt')==='For return';if(fr&&!v('f_rd'))return toast('Enter the expected return date.');
+ const p={id:nextNo(),at:now(),ts:Date.now(),day:today(),dept:(U.role==='Requester'&&v('f_dept'))||U.dept,to:v('f_to'),no:v('f_no'),tr:v('f_tr'),pl:v('f_pl').toUpperCase(),on:v('f_on'),od:v('f_od'),
+  refs:{'Supplier’s inv.':v('f_inv'),'Waybill':v('f_way'),'RR no.':v('f_rr'),'Debit note #':v('f_db'),'Cash/Check':v('f_ch'),'Others':v('f_ot')},
+  items,gr:v('f_gr'),ta:v('f_ta'),rt:fr?'For return':'Not for return',rd:fr?v('f_rd'):'',rm:v('f_rm'),by:U.name,byId:U.email,ap:v('f_ap'),apn:apName(v('f_ap')),status:'Pending',log:[{t:now(),ts:Date.now(),w:U.name,a:'Submitted',n:v('f_ap')?'Sent to '+apName(v('f_ap')):''}]};
+ p.hv=amt(p)>=((D.cfg&&D.cfg.hv)??50000)&&amt(p)>0;seal(p);D.passes.unshift(p);if(U.role==='Requester'&&p.dept!==U.dept)U.dept=p.dept;commit();S.view=p.id;render();toast('Submitted as '+p.id+'. Waiting for the head or OIC.');
+}
+function list(tab){
+ let a=vis();if(tab==='mine')a=D.passes.filter(p=>p.byId===U.email);if(tab==='appr')a=D.passes.filter(canApprove);
+ a=a.filter(stf);if(S.q)a=a.filter(p=>JSON.stringify(p).toLowerCase().includes(S.q.toLowerCase()));
+ const h={mine:'My passes',appr:'Waiting for your approval',all:U.role==='Approver'?'Department passes':'All passes'}[tab];
+ return `<div class="card"><h2>${h}</h2>${S.st?`<p class="note">Filter: <b>${esc(S.st)}</b> <button class="see" data-a="clrf">Clear filter</button></p>`:''}${true?`<input id="q" placeholder="Search by E-Pass No., item, name, destination" value="${esc(S.q)}" aria-label="Search">`:''}${tbl(a)}</div>`}
+function gate(){const w=D.passes.filter(p=>p.status==='Approved'||(p.status==='Released'&&p.rt==='For return'));
+ return `<div class="card"><h2>Gate check</h2><div class="row" style="margin-top:0"><input id="gid" placeholder="Enter or scan the E-Pass No., e.g. TNN-2026-00001" style="flex:1;min-width:220px"><button class="btn" data-a="find">Find pass</button><button class="btn o" data-a="scan">Scan QR</button></div><video id="cam" playsinline style="display:none;width:100%;max-width:360px;border-radius:12px;margin-top:10px"></video></div><div class="card"><h2>Approved, or out on loan</h2>${tbl(w)}</div>`}
+function steps(p){const L=['Submitted','Approved','Released'];if(p.rt==='For return')L.push('Returned');
+ if(p.status==='Rejected'||p.status==='Voided')return `<p class="chip ${p.status}">${p.status==='Rejected'?'Rejected by the approver':'Voided or cancelled'}</p>`;
+ const n={Pending:1,Approved:2,Released:3,Closed:L.length}[p.status];
+ return `<div class="steps">${L.map((s,i)=>`<div class="st ${i<n?'d':i===n?'c':''}"><i>${i<n?'✓':i+1}</i>${s}</div>`).join('')}</div>`}
+function detail(p){
+ if(!p||!canView(p))return '<div class="empty">Pass not found, or you don’t have access to it.</div>';
+ let act='';
+ if(canApprove(p))act=`<label>Note (required to reject, or to approve a high-value pass)<textarea id="note" rows="2"></textarea></label><div class="row"><button class="btn ok" data-a="approve">Approve</button><button class="btn bad" data-a="reject">Reject</button></div>`;
+ else if(allowed('release',p))act=`<p class="note">Check that the items and quantities on the truck match this pass, then release.</p><label>Gate note (optional)<textarea id="note" rows="2"></textarea></label><div class="row"><button class="btn ok" data-a="release">Release at gate</button></div>`;
+ else if(allowed('return',p))act=`<label>Return note, e.g. partial or damaged (optional)<textarea id="note" rows="2"></textarea></label><div class="row"><button class="btn ok" data-a="return">Mark as returned</button></div>`;
+ if(allowed('void',p))act+=`<h3>Admin</h3><label>Reason for voiding (required)<textarea id="note" rows="2"></textarea></label><div class="row"><button class="btn bad" data-a="void">Void this pass</button></div>`;
+ const tot=amt(p);
+ return `<div class="np row" style="margin:0 0 12px"><button class="btn o" data-a="back">← Back</button><button class="btn" data-a="pdf">Download PDF</button><button class="btn o" data-a="print">Print</button>${p.byId===U.email?'<button class="btn o" data-a="dup">Copy to new pass</button>':''}${p.byId===U.email&&p.status==='Pending'?'<button class="btn bad" data-a="cancel">Cancel request</button>':''}</div>
+ <div class="card pa"><div class="top"><div><div class="note">Electronic Gate Pass · Despatched at Tanauan Factory</div><div class="note" style="margin-top:6px">E-Pass No.</div><div class="no">${p.id}</div><div style="margin-top:6px">${chip(p)}</div></div><div><div id="qr"></div><div class="note" style="text-align:center;font-size:11px;margin-top:4px">Scan at the gate</div></div></div>
+ ${steps(p)}
+ <div class="kv" style="margin-top:14px"><div><b>Date filed</b>${esc(p.at)}</div><div><b>Requested by</b>${esc(p.by)}</div><div><b>Department</b>${esc(p.dept)||'–'}</div><div><b>Despatched to</b>${esc(p.to)}</div><div><b>Destination no.</b>${esc(p.no)||'–'}</div><div><b>Trucker</b>${esc(p.tr)||'–'}</div><div><b>Plate no.</b>${esc(p.pl)||'–'}</div><div><b>Order ref.</b>${esc(p.on)||'–'} ${esc(p.od)}</div><div><b>Assigned approver</b>${esc(p.apn||'Any available approver')}</div><div><b>Item status</b>${p.rt}${p.rt==='For return'?' · back by '+esc(p.rd):''}</div></div>
+ <h3>References</h3><div class="kv">${Object.entries(p.refs).map(([k,v])=>`<div><b>${k}</b>${esc(v)||'–'}</div>`).join('')}</div>
+ <h3>Despatch information</h3><div class="sc"><table><thead><tr><th>#</th><th>Description</th><th>Other ref.</th><th>Qty</th><th>Unit</th><th>Amount (₱)</th></tr></thead><tbody>${p.items.map((i,n)=>`<tr><td>${n+1}</td><td>${esc(i.d)}</td><td>${esc(i.r)}</td><td>${esc(i.q)}</td><td>${esc(i.u)}</td><td>${i.a?Number(i.a).toLocaleString():''}</td></tr>`).join('')}<tr><td></td><td colspan="4"><b>Totals</b></td><td><b>${tot?tot.toLocaleString():''}</b></td></tr></tbody></table></div>
+ <div class="kv" style="margin-top:10px"><div><b>Gross (kg)</b>${esc(p.gr)||'–'}</div><div><b>Tare (kg)</b>${esc(p.ta)||'–'}</div><div><b>Net (kg)</b>${net(p)}</div></div>
+ <h3>Remarks</h3><div>${esc(p.rm)||'–'}</div>
+ <h3>Approval trail</h3><ul class="log">${p.log.map(l=>`<li>${esc(l.t)} · ${esc(l.w)} · ${esc(l.a)}${l.n?' – '+esc(l.n):''}</li>`).join('')}</ul>
+ <div class="sig"><div>Approved by (Head / OIC)<br>${p.approver?'<b style="color:var(--ink)">'+esc(p.approver)+'</b>':''}</div><div>Received above articles in good order and condition – Name, signature, date</div></div>
+ ${U.role==='Admin'?`<p class="note np" style="margin-top:12px">Record check: ${okSum(p)?'<b style="color:var(--ok)">intact</b>':'<b style="color:var(--bad)">does not match its checksum</b>'}</p>`:''}</div>
+ ${act?`<div class="card np">${act}</div>`:''}${reassignCard(p)}`}
+function act(a){
+ const p=D.passes.find(x=>x.id===S.view);if(!p||!U||!allowed(a,p))return toast('Not allowed: this action needs a different role.');
+ const n=($('#note')||{}).value||'';if((a==='reject'||a==='void'||(a==='approve'&&p.hv))&&!n.trim())return toast(a==='approve'?'High-value pass: add an approval note first.':'Add a note first.');
+ if(a==='approve'){p.status='Approved';p.approver=U.name+', '+U.title}else if(a==='reject')p.status='Rejected';else if(a==='release')p.status='Released';else if(a==='return')p.status='Closed';else{p.status='Voided';adminLog('Voided '+p.id)}
+ p.log.push({t:now(),ts:Date.now(),w:U.name+' ('+U.title+')',a:{approve:'Approved',reject:'Rejected',release:'Released at gate',return:'Marked returned',void:'Voided'}[a],n:n.trim()});
+ seal(p);commit();render();toast('Done.')}
+/* admin: records, export */
+function filt(){const g=i=>($('#rf_'+i)||{}).value||'',q=g('q').toLowerCase();
+ return D.passes.filter(p=>(!g('from')||p.day>=g('from'))&&(!g('to')||p.day<=g('to'))&&(!g('dept')||p.dept===g('dept'))&&(!g('st')||p.status===g('st'))&&(!g('rt')||p.rt===g('rt'))&&(!q||JSON.stringify([p.id,p.to,p.by,p.items,p.refs,p.tr,p.pl]).toLowerCase().includes(q)))}
+function recs(){const ds=[...new Set(D.passes.map(p=>p.dept))];
+ return `<div class="card pa"><div class="top"><h2>Records &amp; reports</h2><div class="row np" style="margin:0"><button class="btn" data-a="csv">Export CSV (opens in Excel)</button><button class="btn o" data-a="pdf">Download PDF</button><button class="btn o" data-a="print">Print report</button></div></div>
+ <div class="g np"><label>From<input id="rf_from" type="date"></label><label>To<input id="rf_to" type="date"></label><label>Department<select id="rf_dept"><option value="">All</option>${ds.map(d=>`<option>${esc(d)}</option>`).join('')}</select></label>
+ <label>Status<select id="rf_st"><option value="">All</option>${['Pending','Approved','Rejected','Released','Closed','Voided'].map(s=>`<option>${s}</option>`).join('')}</select></label>
+ <label>Item status<select id="rf_rt"><option value="">All</option><option>For return</option><option>Not for return</option></select></label><label>Search<input id="rf_q" placeholder="E-Pass No., name, item…"></label></div><div id="rt" style="margin-top:12px"></div></div>`}
+function fillRecs(){const a=filt();$('#rt').innerHTML=`<p class="note">${a.length} record(s) · total declared value ₱${a.reduce((s,p)=>s+amt(p),0).toLocaleString()}</p>`+tbl(a)}
+function csv(a){const H=['E-Pass No.','Date filed','Department','Requested by','Despatched to','Destination no.','Trucker','Plate no.','Order ref.','Item status','Expected return','Status','Approved by','Items','Total value (PHP)','Gross kg','Tare kg','Net kg','Remarks'];
+ const q=v=>{v=String(v==null?'':v);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+ return '\ufeff'+[H,...a.map(p=>[p.id,p.at,p.dept,p.by,p.to,p.no,p.tr,p.pl,p.on,p.rt,p.rd,p.status,p.approver||'',p.items.map(i=>(i.d+' x'+i.q+' '+i.u).trim()).join('; '),amt(p),p.gr,p.ta,net(p),p.rm])].map(r=>r.map(q).join(',')).join('\r\n')}
+async function dl(name,data,type){
+ try{const d=window.claude&&await claude.use('downloads');if(d){await d.save({filename:name,data});return true}}catch(e){if(e&&e.code==='declined')return false}
+ try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();return true}catch(e){return false}}
+/* admin: users, backup */
+function users(){return `<div class="card"><h2>Who can use the system</h2><div class="sc"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Department</th><th>Title</th><th>Access</th><th></th></tr></thead><tbody>${D.users.map((u,i)=>`<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${u.role}</td><td>${esc(u.dept)}</td><td>${esc(u.title)}</td><td>${u.active?'Active':'Disabled'}${u.role==='Approver'?(u.away?' · <b>Away</b>':' · Available'):''}</td><td><button class="btn o s" data-eu="${i}">Edit</button> ${u.email===U.email?'':`<button class="btn o s" data-rp="${i}">Set temp password</button> <button class="btn o s" data-u="${i}">${u.active?'Disable':'Enable'}</button>${u.role==='Approver'?` <button class="btn o s" data-aw="${i}">${u.away?'Mark available':'Mark away'}</button>`:''}`}</td></tr>`).join('')}</tbody></table></div></div>
+ <div class="card"><h2>Add a person</h2><div class="g"><label>Full name<input id="n_name"></label><label>Company email<input id="n_em" type="email"></label><label>Role<select id="n_role"><option>Requester</option><option>Approver</option><option>Security</option><option>Admin</option></select></label><label>Department<input id="n_dept"></label><label>Title<input id="n_title" placeholder="e.g. Department Head, OIC"></label><label>Temporary password<input id="n_pw" type="text" placeholder="They change it at first sign-in"></label></div><div class="row"><button class="btn" data-a="adduser">Add person</button></div></div>
+ <div class="card"><h2>Admin activity</h2>${D.admin.length?`<ul class="log">${D.admin.slice(-10).reverse().map(l=>`<li>${esc(l.t)} · ${esc(l.w)} · ${esc(l.a)}</li>`).join('')}</ul>`:'<span class="note">Nothing yet.</span>'}</div>`}
+function safe(){const l=D.lastBackup;
+ return `${backupDue()?'<div class="card warnb">Backup due: records have changed since the last backup. Save a backup file now.</div>':''}
+ <div class="card"><h2>Backup</h2><p class="note">Last backup: ${l?esc(l.at)+' ('+l.n+' records)':'never'}.</p><div class="row"><button class="btn" data-a="backup">Save backup file</button></div></div>
+ <div class="card"><h2>Restore</h2><p class="note">Choose a backup file. This replaces all current records.</p><input type="file" id="rfile" accept=".json,application/json">${S.res?`<p>Replace the current ${D.passes.length} record(s) with ${S.res.passes.length} record(s) from the file?</p><div class="row"><button class="btn bad" data-a="restore">Yes, restore</button><button class="btn o" data-a="cancelres">Cancel</button></div>`:''}</div>
+ <div class="card"><h2>Check records</h2><p class="note">Checks every record for damage or outside edits.</p><div class="row"><button class="btn o" data-a="verify">Check all records</button></div><div id="vres"></div></div>`}
+/* events */
+document.addEventListener('click',async e=>{
+ const t=e.target.closest('[data-t],[data-v],[data-a],[data-e],[data-u],[data-f],[data-sw],[data-aw]');if(!t)return;
+ if(t.dataset.e){$('#em').value=t.dataset.e;return}
+ if(t.dataset.aw){const u=D.users[+t.dataset.aw];if(u){u.away=!u.away;adminLog((u.away?'Marked away: ':'Marked available: ')+u.email);commit();render()}return}if(t.dataset.sw){const d=D.users.find(x=>x.email===t.dataset.sw);if(d){U=d;S.tab='home';S.view=null;S.st='';S.q='';try{sessionStorage.setItem('egp_u',d.email)}catch(x){}hidePop();render()}return}if(t.dataset.f){S.st=t.dataset.f;S.q='';S.view=null;S.tab={Requester:'mine',Approver:'all',Security:'all',Admin:'recs'}[U.role];return render()}if(t.dataset.t){S.tab=t.dataset.t;S.view=null;S.st='';S.q='';$('#gs').value='';return render()}
+ if(t.dataset.v){S.view=t.dataset.v;return render()}
+ if(t.dataset.u){const u=D.users[+t.dataset.u];if(u&&u.email!==U.email){u.active=!u.active;adminLog((u.active?'Enabled ':'Disabled ')+u.email);commit();render()}return}
+ const a=t.dataset.a;
+ if(a==='addrow')addRow();else if(a==='delrow')t.closest('tr').remove();
+ else if(a==='rt0'||a==='rt1'){const r=a==='rt1';$('#f_rt').value=r?'For return':'Not for return';document.querySelectorAll('.seg-b').forEach(b=>b.classList.toggle('on',b.dataset.a===a));$('#rdw').style.display=r?'block':'none'}
+ else if(a==='submit')submit();else if(a==='back'){S.view=null;render()}else if(a==='print')doPrint();else if(a==='pdf')doPdf();
+ else if(a==='find')handleScan($('#gid').value)
+ else if(a==='login'){await doLogin()}
+ else if(a==='logout'){U=null;S.view=null;try{sessionStorage.removeItem('egp_u')}catch(x){}render()}
+ else if(a==='csv'){if(U.role==='Admin'&&await dl('EGP-records-'+today()+'.csv',csv(filt()),'text/csv'))toast('Report ready.')}
+ else if(a==='backup'){if(U.role!=='Admin')return;if(await dl('EGP-backup-'+today()+'.json',JSON.stringify(D,null,1),'application/json')){D.lastBackup={ts:Date.now(),at:now(),ts:Date.now(),n:D.passes.length,changes:D.changes};Store.save(D);render();toast('Backup saved.')}}
+ else if(a==='verify'){const bad=D.passes.filter(p=>!okSum(p));$('#vres').innerHTML=bad.length?`<p style="color:var(--bad)">${bad.length} record(s) don’t match their checksum: ${bad.map(p=>esc(p.id)).join(', ')}</p>`:`<p style="color:var(--ok)">All ${D.passes.length} record(s) are intact.</p>`}
+ else if(a==='adduser'){const v=i=>$('#n_'+i).value.trim(),em=v('em').toLowerCase();if(!v('name')||!em.includes('@')||!v('dept'))return toast('Enter name, email and department.');if(!okDomain(em))return toast('Use a company email (@'+domOf()+').');if(D.users.some(u=>u.email===em))return toast('That email already has access.');const tp=v('pw');if(!pwOk(tp))return toast(pwMsg);const nu=U0(em,v('name'),v('role'),v('dept'),v('title')||v('role')),sl=newSalt();nu.pw={s:sl,h:await hashPw(tp,sl)};nu.must=true;D.users.push(nu);adminLog('Added '+em+' as '+v('role'));commit();render();toast('Person added.')}
+ else if(a==='restore'&&S.res&&U.role==='Admin'){D=S.res;S.res=null;adminLog('Restored from a backup file');Store.save(D);U=D.users.find(u=>u.email===U.email&&u.active)||null;render();toast('Records restored.')}
+ else if(a==='cancelres'){S.res=null;render()}
+ else if(a==='dup')dup();else if(a==='scan')scan();else if(a==='mclose')closeModal();else if(a==='mact')modalAct(t.dataset.x);else if(a==='mopen'){closeModal();S.view=t.dataset.id;render()}else if(a==='away')toggleAway();else if(a==='reassign')reassign();else if(a==='bell'){S.view=null;S.tab={Approver:'appr',Security:'gate',Requester:'mine',Admin:'safe'}[U.role];render()}else if(a==='fb')fbform();else if(a==='fbsend')fbsend();else if(a==='avatar')avatarMenu();else if(a==='globe')globeMenu();else if(a==='sbt')$('#side').classList.toggle('open');else if(a==='gs')doSearch();else if(a==='sl'){S.sl=+t.dataset.i;render()}else if(a==='clrf'){S.st='';render()}else if(a==='pf'){const v=t.dataset.val;P[t.dataset.k]=v==='true'?true:v==='false'?false:v;savePf();applyPf();render()}else if(a==='cfg')saveCfg();else if(a==='cancel')cancelReq();else if(a==='glcsv')glcsv();else if(a==='sample')sample();else if(a==='clearall')clearAll();else act(a)});
+document.addEventListener('input',e=>{const i=e.target.id||'';
+ if(i==='q'){S.q=e.target.value;const c=e.target.selectionStart;render();const q=$('#q');q.focus();q.setSelectionRange(c,c)}
+ else if(i.indexOf('rf_')===0)fillRecs()});
+document.addEventListener('change',e=>{
+ if(e.target.id==='rfile'&&U&&U.role==='Admin'){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.schema||!Array.isArray(d.passes)||!Array.isArray(d.users))throw 0;S.res=d;render()}catch(x){toast('That file is not a valid backup.')}};r.readAsText(f)}
+ else if(e.target.id&&e.target.id.indexOf('rf_')===0)fillRecs()});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='gs'&&U){doSearch()}if(e.key==='Enter'&&(e.target.id==='em'||e.target.id==='pw'))document.querySelector('[data-a="login"]').click()});
+const pend=()=>U.role==='Approver'?D.passes.filter(canApprove).length:U.role==='Security'?D.passes.filter(p=>p.status==='Approved'||overdue(p)).length:U.role==='Requester'?D.passes.filter(p=>p.byId===U.email&&(p.status==='Approved'||p.status==='Rejected')).length:D.passes.filter(p=>!okSum(p)).length;
+
+function home(){const v=vis(),c=f=>v.filter(f).length,hr=new Date().getHours(),g=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+ const H={Requester:'File a pass for items leaving the factory and follow its approval.',Approver:'Review passes from your department before items go out.',Security:'Check each approved pass against the truck before release.',Admin:'Keep records complete, export reports and back up regularly.'}[U.role];
+ const T=[['Waiting for approval',c(p=>p.status==='Pending'),''],['Approved, ready for gate',c(p=>p.status==='Approved'),''],['Out on loan',c(p=>p.status==='Released'&&p.rt==='For return'),''],['Overdue returns',c(overdue),'hot']];
+ const ap=v.map(p=>{const a=p.log.find(l=>l.a==='Approved');return a&&a.ts&&p.log[0].ts?a.ts-p.log[0].ts:null}).filter(x=>x!=null);
+ const avg=ap.length?(ap.reduce((a,b)=>a+b,0)/ap.length/36e5).toFixed(1)+' h':'–';
+ const ret=c(p=>p.rt==='For return'&&p.status==='Closed'),late=c(overdue),ot=ret+late?Math.round(ret/(ret+late)*100)+'%':'–';
+ const st=['Pending','Approved','Released','Closed','Rejected','Voided'];
+ return `${STORE_OK?'':'<div class="card warnb">Browser storage is blocked here, so records are lost when this page closes. Open the file in Chrome or Edge, or host it online, to keep them. You can also save a backup file.</div>'}${U.role==='Admin'&&backupDue()?'<div class="card warnb">Backup due: records changed since the last backup. Open Backup &amp; integrity.</div>':''}
+ <div class="hm"><div class="sec"><h2>Gate pass overview</h2>${banner(g,H,T)}</div>
+ <div class="sec"><h2>Latest passes <button class="see" data-t="${U.role==='Requester'?'mine':U.role==='Approver'?'all':U.role==='Security'?'all':'recs'}">See all</button></h2>${v.length?v.slice(0,4).map(p=>`<div class="nw" data-v="${p.id}"><div class="th">${G[p.status]}</div><div><b>${esc(p.to)}</b><div>${p.id} · ${esc(itx(p,2))||p.items.length+' item(s)'}</div><small>${esc(p.day)} · ${p.status}</small></div></div>`).join(''):'<div class="empty">No passes yet.</div>'}</div>
+ <div class="panel"><h3>Quick actions</h3>${TABS[U.role].slice(1).map(t=>`<button class="fav" data-t="${t[0]}">${t[1]}</button>`).join('')}<hr><h3>Insights</h3>${U.role==='Security'?'':U.role==='Requester'?'<div class="note">On-time returns: <b>'+ot+'</b></div>':'<div class="note">Avg. approval time: <b>'+avg+'</b><br>On-time returns: <b>'+ot+'</b></div>'}<div style="margin-top:10px">${st.map(x=>{const k=c(p=>p.status===x);return `<div class="bar" data-f="${x}"><span>${x}</span><i style="width:${v.length?k/v.length*100:0}%"></i><b>${k}</b></div>`}).join('')}</div></div></div>
+ <div class="sec"><h2>Needs your action</h2>${tasks()}</div><div class="sec" style="margin-top:26px"><h2>Key figures at Tanauan Factory</h2><div class="tiles">${T.map((t,i)=>`<div class="tile ${t[2]}" data-f="${['Pending','Approved','Out','Overdue'][i]}"><b>${t[1]}</b>${t[0]}</div>`).join('')}</div></div>`}
+function dup(){const p=D.passes.find(x=>x.id===S.view);if(!p)return;S.tab='new';S.view=null;render();
+ const f=(i,x)=>{$('#f_'+i).value=x||''};f('to',p.to);f('ap',p.ap);f('no',p.no);f('tr',p.tr);f('pl',p.pl);f('on',p.on);f('rm',p.rm);f('gr',p.gr);f('ta',p.ta);
+ f('inv',p.refs['Supplier’s inv.']);f('way',p.refs['Waybill']);f('rr',p.refs['RR no.']);f('db',p.refs['Debit note #']);f('ch',p.refs['Cash/Check']);f('ot',p.refs['Others']);
+ $('#items').innerHTML='';p.items.forEach(i=>{addRow();const r=$('#items').lastChild;r.querySelector('.d').value=i.d;r.querySelector('.r').value=i.r;r.querySelector('.q').value=i.q;r.querySelector('.u').value=i.u;r.querySelector('.a').value=i.a});
+ toast('Copied. Review the details, then submit.')}
+async function scan(){if(!('BarcodeDetector' in window))return toast('QR scanning is not supported in this browser. Type the number instead.');
+ try{const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}),v=$('#cam');v.style.display='block';v.srcObject=st;await v.play();const bd=new BarcodeDetector({formats:['qr_code']});
+ const t=setInterval(async()=>{try{const r=await bd.detect(v);if(r[0]){clearInterval(t);st.getTracks().forEach(x=>x.stop());$('#gid').value=r[0].rawValue.trim();document.querySelector('[data-a="find"]').click()}}catch(e){}},400)}catch(e){toast('Camera not available.')}}
+
+const stf=p=>!S.st||(S.st==='Out'?p.status==='Released'&&p.rt==='For return':S.st==='Overdue'?overdue(p):p.status===S.st);
+function banner(g,H,T){const n=pend(),LT={Requester:'mine',Approver:'all',Security:'all',Admin:'recs'}[U.role];
+ const L=[[g+', '+U.name.split(' ')[0],H,''],[n+(n==1?' item needs':' items need')+' your attention','Open the items waiting for you.','bell'],['Out on loan: '+T[2][1]+' · Overdue: '+T[3][1],'Follow up on items marked For return.',LT],['Tip','Print a pass and scan its QR code at the gate to open it instantly.','']];
+ const i=S.sl=((S.sl||0)+4)%4,x=L[i];
+ return `<div class="ban"><h2>${esc(x[0])}</h2><p>${esc(x[1])}</p>${x[2]?`<button class="btn s" ${x[2]==='bell'?'data-a="bell"':'data-t="'+x[2]+'"'} style="margin-top:12px;align-self:flex-start;background:#fff;color:#0a6b3b;border-color:#fff">Open</button>`:''}</div>
+ <div class="dots"><button class="see" data-a="sl" data-i="${i-1}" aria-label="Previous">‹</button>${L.map((_,k)=>`<button class="dot ${k===i?'on':''}" data-a="sl" data-i="${k}" aria-label="Slide ${k+1}"></button>`).join('')}<button class="see" data-a="sl" data-i="${i+1}" aria-label="Next">›</button></div>`}
+
+function help(){const H={Requester:['Open New pass, choose the approver (unavailable ones are greyed out), then enter who the items go to and the item list.','Press Submit for approval. Your department head or OIC reviews it.','Once approved, print the pass for the driver.','For loaned items, make sure they come back by the expected date.'],Approver:['Open Approvals to see passes from your department.','Open a pass, then Approve or Reject (a note is needed to reject).','You cannot approve your own pass. Use Mark me as away on Home when you are unavailable.'],Security:['Open Gate check and scan the QR code, or type the pass number. A pop-up shows the details and whether it is OK to release.','Match the items and quantities on the truck, then Release at gate.','When loaned items return, open the pass and Mark as returned.'],Admin:['Use Records & reports to filter, print or export CSV.','Use Users to add people or disable access.','Use Backup & integrity to save a backup and check records.']}[U.role];
+ return `<div class="card"><h2>How to use the E-Gate Pass</h2><ol>${H.map(x=>`<li>${x}</li>`).join('')}</ol><p class="note">The orange “to do” button at the top shows items waiting for you, and the search box opens any pass by number.</p></div>`}
+function setFs(z){try{localStorage.setItem('egp_fs',z)}catch(e){}document.body.style.fontSize=z+'px';render()}
+try{const z=localStorage.getItem('egp_fs');if(z)document.body.style.fontSize=z+'px'}catch(e){}
+function sample(){if(U.role!=='Admin')return;const u=e=>D.users.find(x=>x.email===e),M=u('maria.santos@demo.local'),J=u('juan.delacruz@demo.local'),A=u('ana.reyes@demo.local'),R=u('ramon.torres@demo.local'),dd=n=>new Date(Date.now()+n*864e5).toISOString().slice(0,10);
+ const I=[[{d:'Packaging film',r:'',q:'20',u:'rolls',a:'15000'}],[{d:'Spare motor',r:'SN-221',q:'1',u:'pc',a:'42000'}]];
+ const mk=(by,to,it,st,rt,rd)=>{const t=Date.now()-Math.random()*4*864e5,p={id:nextNo(),at:now(),day:today(),dept:by.dept,to,no:'',tr:'Sample Trucking',pl:'ABC 1234',on:'',od:'',refs:{'Supplier’s inv.':'','Waybill':'','RR no.':'','Debit note #':'','Cash/Check':'','Others':''},items:it,gr:'',ta:'',rt,rd,rm:'Sample record',by:by.name,byId:by.email,status:'Pending',log:[{t:now(),ts:t,w:by.name,a:'Submitted',n:v('f_ap')?'Sent to '+apName(v('f_ap')):''}]},ap=by.dept==='Production'?A:u('liza.cruz@demo.local');
+  if(st==='Rejected'){p.status=st;p.log.push({t:now(),ts:t+36e5,w:ap.name,a:'Rejected',n:'Incomplete details'})}
+  else if(st!=='Pending'){p.status='Approved';p.approver=ap.name+', '+ap.title;p.log.push({t:now(),ts:t+(1+Math.random()*5)*36e5,w:ap.name,a:'Approved'});if(st!=='Approved'){p.status='Released';p.log.push({t:now(),ts:t+9e6,w:R.name,a:'Released at gate'});if(st==='Closed'){p.status='Closed';p.log.push({t:now(),ts:t+2e7,w:R.name,a:'Marked returned'})}}}
+  seal(p);D.passes.unshift(p)};
+ mk(M,'Distributor A',I[0],'Pending','Not for return','');mk(M,'Supplier B',I[1],'Approved','For return',dd(3));mk(M,'Repair Shop C',I[1],'Released','For return',dd(-1));mk(M,'Customer D',I[0],'Released','Not for return','');mk(M,'Vendor E',I[1],'Closed','For return',dd(1));mk(J,'Client F',I[0],'Pending','Not for return','');mk(M,'Vendor G',I[0],'Rejected','Not for return','');
+ adminLog('Added sample passes');commit();render();toast('Sample passes added.')}
+function clearAll(){if(U.role!=='Admin')return;if(!S.cf){S.cf=1;setTimeout(()=>S.cf=0,4000);return toast('Click Delete all passes again to confirm.')}S.cf=0;D.passes=[];adminLog('Deleted all passes');commit();render();toast('All passes deleted.')}
+function pop(h,top,right){let e=$('#pop');if(!e){e=document.createElement('div');e.id='pop';document.body.appendChild(e)}e.innerHTML=h;e.style.top=top+'px';e.style.right=right+'px';e.style.display='block'}
+function hidePop(){const e=$('#pop');if(e)e.style.display='none'}
+function avatarMenu(){pop(`<h3>${esc(U.name)}</h3><div class="note">${esc(U.email)}<br>${esc(U.role)} · ${esc(U.dept)}</div><div class="row"><button class="btn o s" data-t="set">Settings</button><button class="btn s" data-a="logout">Sign out</button></div>`,46,12)}
+function globeMenu(){pop(`<h3>Switch demo account</h3>${D.users.filter(u=>u.active).map(u=>`<button class="fav" data-sw="${esc(u.email)}">${esc(u.name)} <small>· ${esc(u.title)}</small></button>`).join('')}`,100,30)}
+function fbform(){pop('<h3>Share feedback</h3><textarea id="fbt" rows="4" placeholder="What can we improve?"></textarea><div class="row"><button class="btn s" data-a="fbsend">Send</button></div>',200,40)}
+function fbsend(){const v=$('#fbt').value.trim();if(!v)return toast('Write your feedback first.');(D.fb=D.fb||[]).push({t:now(),w:U?U.name:'Not signed in',m:v});commit();hidePop();toast('Thank you for your feedback.')}
+function doSearch(){if(!U)return;S.q=$('#gs').value.trim();S.st='';const p=D.passes.find(x=>x.id===S.q.toUpperCase()&&canView(x));S.view=p?p.id:null;const T=TABS[U.role].map(t=>t[0]);S.tab=T.includes('all')?'all':T.includes('mine')?'mine':S.tab;render()}
+document.addEventListener('click',e=>{if(!e.target.closest('#pop,[data-a="avatar"],[data-a="globe"],[data-a="fb"]'))hidePop()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){hidePop();closeModal()}if(e.key==='Enter'&&e.target.id==='gid')document.querySelector('[data-a="find"]').click()});
+
+const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+const STORE_OK=(()=>{try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return true}catch(e){return false}})();
+const P=(()=>{let p={};try{p=JSON.parse(ls.get('egp_pf')||'{}')}catch(e){}return Object.assign({fs:'15',theme:'light',start:'home',alert:true},p)})();
+const savePf=()=>ls.set('egp_pf',JSON.stringify(P));
+function applyPf(){document.body.style.fontSize=P.fs+'px';document.body.classList.toggle('dk',P.theme==='dark')}
+function addDays(d,n){const x=new Date(d+'T00:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)}
+function startTab(d){if(P.alert)setTimeout(()=>{const n=pend();if(n)toast('You have '+n+(n==1?' item':' items')+' needing attention.')},500);return P.start==='work'?TABS[d.role][1][0]:'home'}
+TABS.Security.push(['log','Gate log']);TABS.Admin.splice(2,0,['log','Gate log']);
+function tasks(){const v=vis(),a=U.role==='Approver'?v.filter(canApprove):U.role==='Security'?v.filter(p=>p.status==='Approved'||overdue(p)):U.role==='Requester'?v.filter(p=>p.byId===U.email&&(p.status==='Approved'||p.status==='Rejected'||overdue(p))):v.filter(p=>!okSum(p));
+ return a.length?tbl(a):'<div class="empty">Nothing needs your action. You are all caught up.</div>'}
+function settings(){const pf=(k,v,l)=>`<button class="btn s ${String(P[k])===String(v)?'':'o'}" data-a="pf" data-k="${k}" data-val="${v}">${l}</button>`,c=D.cfg||{};
+ return `<div class="card"><h2>Settings</h2><h3>Profile</h3><div class="kv"><div><b>Name</b>${esc(U.name)}</div><div><b>Email</b>${esc(U.email)}</div><div><b>Role</b>${U.role}</div><div><b>Department</b>${U.role==='Requester'?'<select id="s_dept" style="margin:2px 0">'+deptOpts(U.dept)+'</select> <button class="btn s" data-mydept="1">Save</button>':esc(U.dept)}</div><div><b>Title</b>${esc(U.title)}</div></div>
+ ${U.role==='Admin'?'<div class="row" style="margin-top:8px"><button class="btn o s" data-eu="'+D.users.indexOf(U)+'">Edit my details</button></div>':''}<h3>Password</h3><div class="g"><label>Current password<input id="cp0" type="password"></label><label>New password<input id="cp1" type="password"></label><label>Confirm new password<input id="cp2" type="password"></label></div><div class="row"><button class="btn s" data-pw="chg">Change password</button></div><h3>Display</h3><div class="row" style="margin-top:0">${pf('fs','14','Small text')}${pf('fs','15','Medium text')}${pf('fs','17','Large text')}${pf('theme','light','Light')}${pf('theme','dark','Dark')}</div>
+ <h3>When I sign in</h3><div class="row" style="margin-top:0">${pf('start','home','Open Home')}${pf('start','work','Open '+TABS[U.role][1][1])}${pf('alert',true,'Alert me')}${pf('alert',false,'No alerts')}</div><p class="cfgn">These choices are saved on this browser.</p>
+ ${U.role==='Admin'?`<h3>System rules</h3><div class="g"><label>Pass number prefix<input id="c_prefix" value="${esc(c.prefix||'TNN')}" maxlength="6"></label><label>Company email domain<input id="c_dom" value="${esc(c.domain||'demo.local')}" placeholder="e.g. nestle.com"></label><label>Web address of this system (for phone QR scans)<input id="c_url" value="${esc(c.url||'')}" placeholder="https://..."></label><label>Overdue grace period (days)<input id="c_grace" type="number" min="0" max="30" value="${c.grace||0}"></label><label>High-value threshold (₱): needs an approval note<input id="c_hv" type="number" min="0" value="${c.hv??50000}"></label></div><div class="row"><button class="btn s" data-a="cfg">Save rules</button></div>
+ <h3>Demo data</h3><p class="note">Add sample passes to try the dashboard and reports, or remove every pass.</p><div class="row" style="margin-top:0"><button class="btn o s" data-a="sample">Add sample passes</button><button class="btn bad s" data-a="clearall">Delete all passes</button></div>
+ `:''}</div>`}
+function saveCfg(){if(U.role!=='Admin')return;const p=$('#c_prefix').value.trim().toUpperCase(),g=+$('#c_grace').value,h=+$('#c_hv').value;
+ if(!/^[A-Z]{2,6}$/.test(p))return toast('Prefix must be 2 to 6 letters.');if(!(g>=0&&g<=30))return toast('Grace period must be 0 to 30 days.');if(!(h>=0))return toast('Enter a valid threshold.');
+ const dm=($('#c_dom').value||'').trim().toLowerCase().replace(/^@/,'');if(!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(dm))return toast('Enter the company email domain, e.g. nestle.com');const ur=($('#c_url').value||'').trim();if(ur&&!/^https:\/\/[^\s]+$/.test(ur))return toast('The web address must start with https://');D.cfg={prefix:p,grace:g,hv:h,domain:dm,url:ur};adminLog('Changed system rules');commit();render();const off=D.users.filter(u=>u.active&&!okDomain(u.email)).length;toast('Rules saved.'+(off?' '+off+' active user(s) use another email domain and cannot sign in.':''))}
+function help(){const H={Requester:['Open New pass, choose the approver (unavailable ones are greyed out), then enter who the items go to and the item list.','Press Submit for approval. Your department head or OIC reviews it. You can cancel it while it is still pending.','Once approved, print the pass for the driver.','For loaned items, make sure they come back by the expected date.'],Approver:['Open Approvals to see passes from your department.','Open a pass, then Approve or Reject. A note is needed to reject, or to approve a high-value pass.','You cannot approve your own pass. Use Mark me as away on Home when you are unavailable.'],Security:['Open Gate check and scan the QR code, or type the pass number. A pop-up shows the details and whether it is OK to release.','Match the items and quantities on the truck, then Release at gate.','When loaned items return, Mark as returned.','Gate log lists every movement in and out.'],Admin:['Records & reports: filter, print or export CSV.','Gate log: every movement in and out.','Users: add people or disable access.','Settings: pass prefix, overdue grace days and the high-value threshold.','Backup & integrity: save a backup and check records.']}[U.role];
+ return `<div class="card"><h2>How to use the E-Gate Pass</h2><ol>${H.map(x=>`<li>${x}</li>`).join('')}</ol><p class="note">The orange “to do” button at the top shows items waiting for you, and the search box opens any pass by number.</p></div>`}
+function gatelog(){const E=[];D.passes.forEach(p=>p.log.forEach(l=>{if(l.a==='Released at gate'||l.a==='Marked returned')E.push({ts:l.ts||0,t:l.t,id:p.id,it:itx(p),to:p.to,tr:p.tr,pl:p.pl,ev:l.a==='Released at gate'?'OUT':'IN',w:l.w,n:l.n||''})}));E.sort((a,b)=>b.ts-a.ts);S.gl=E;
+ return `<div class="card"><div class="top"><h2>Gate log</h2><button class="btn o s" data-a="glcsv">Export CSV</button></div>${E.length?`<div class="sc"><table><thead><tr><th>Time</th><th>Movement</th><th>E-Pass No.</th><th>Destination</th><th>Items</th><th>Trucker / plate</th><th>Guard</th><th>Note</th></tr></thead><tbody>${E.map(e=>`<tr><td>${esc(e.t)}</td><td><span class="chip ${e.ev==='OUT'?'Released':'Closed'}">${e.ev==='OUT'?'↑ OUT':'↓ IN'}</span></td><td><button class="see" data-v="${e.id}">${e.id}</button></td><td>${esc(e.to)}</td><td>${esc(e.it)}</td><td>${esc(e.tr)} ${esc(e.pl)}</td><td>${esc(e.w)}</td><td>${esc(e.n)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No gate movements yet.</div>'}</div>`}
+async function glcsv(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"',r='\ufeff'+[['Time','Movement','E-Pass No.','Destination','Items','Trucker','Plate','Guard','Note'],...S.gl.map(e=>[e.t,e.ev,e.id,e.to,e.it,e.tr,e.pl,e.w,e.n])].map(x=>x.map(q).join(',')).join('\r\n');if(await dl('EGP-gate-log-'+today()+'.csv',r,'text/csv'))toast('Gate log exported.')}
+function cancelReq(){const p=D.passes.find(x=>x.id===S.view);if(!p||p.byId!==U.email||p.status!=='Pending')return toast('Only your own pending passes can be cancelled.');p.status='Voided';p.log.push({t:now(),ts:Date.now(),w:U.name,a:'Cancelled by requester'});seal(p);commit();render();toast('Request cancelled.')}
+applyPf();
+
+function render(){
+ if(window._cam){window._cam.getTracks().forEach(x=>x.stop());window._cam=null}
+ if(!U){loginView();return}
+ const n=pend(),ts=TABS[U.role].concat([['set','Settings'],['help','Help']]);if(!ts.some(t=>t[0]===S.tab))S.tab='home';
+ const wt={Approver:'appr',Security:'gate',Requester:'mine',Admin:'safe'}[U.role];
+ $('#who').innerHTML=`${U.role==='Security'?'':'<button class="btn o s" data-vfy="1">Verify pass</button>'}${n?`<button class="pill" data-t="${wt}">${n} to do</button>`:''}<span class="me"><b>${esc(U.name)}</b><br><small>${esc(U.title)}, ${esc(U.dept)}</small></span><button class="btn o s" data-a="logout">Sign out</button>`;
+ $('#tabs').innerHTML=ts.map(t=>`<button class="tab ${S.tab===t[0]&&!S.view?'on':''}" data-t="${t[0]}">${t[1]}</button>`).join('');
+ const m=$('#main');
+ if(S.view){const p=D.passes.find(x=>x.id===S.view);m.innerHTML=detail(p);const q=$('#qr');if(q&&p&&window.QRCode)new QRCode(q,{text:qrText(p),width:240,height:240,correctLevel:QRCode.CorrectLevel.L});return}
+ m.innerHTML=({home,new:form,mine:()=>list('mine'),appr:()=>list('appr'),all:()=>list('all'),gate,recs,users,safe,set:settings,help,log:gatelog})[S.tab]();
+ if(S.tab==='new'){addRow();addRow()}
+ if(S.tab==='recs'){if(S.st&&$('#rf_st')){$('#rf_st').value={Out:'Released',Overdue:'Released'}[S.st]||S.st;if(S.st==='Out'||S.st==='Overdue')$('#rf_rt').value='For return'}fillRecs()}
+ window.scrollTo(0,0)}
+function doSearch(){if(!U)return;S.q=$('#gs').value.trim();S.st='';const p=D.passes.find(x=>x.id===S.q.toUpperCase()&&canView(x));S.view=p?p.id:null;const T=TABS[U.role].map(t=>t[0]);S.tab=T.includes('all')?'all':T.includes('mine')?'mine':'recs';render();if(S.tab==='recs'&&!S.view){$('#rf_q').value=S.q;fillRecs()}}
+function home(){const v=vis(),c=f=>v.filter(f).length,hr=new Date().getHours(),g=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+ const H={Requester:'File a pass for items leaving the factory and follow its approval.',Approver:'Review passes from your department before items go out.',Security:'Check each approved pass against the truck before release.',Admin:'Keep the records complete, export reports and back up regularly.'}[U.role];
+ const T=[['Waiting for approval',c(p=>p.status==='Pending')],['Approved, ready for gate',c(p=>p.status==='Approved')],['Out on loan',c(p=>p.status==='Released'&&p.rt==='For return')],['Overdue returns',c(overdue)]];
+ const ap=v.map(p=>{const a=p.log.find(l=>l.a==='Approved');return a&&a.ts&&p.log[0].ts?a.ts-p.log[0].ts:null}).filter(x=>x!=null);
+ const avg=ap.length?(ap.reduce((a,b)=>a+b,0)/ap.length/36e5).toFixed(1)+' h':'–',ret=c(p=>p.rt==='For return'&&p.status==='Closed'),late=c(overdue),ot=ret+late?Math.round(ret/(ret+late)*100)+'%':'–';
+ return `${STORE_OK?'':'<div class="card warnb">Browser storage is blocked here, so records are lost when this page closes. Open the file in Chrome or Edge, or host it online, to keep them. You can also save a backup file.</div>'}${U.role==='Admin'&&backupDue()?'<div class="card warnb">Backup due: records changed since the last backup. Open Backup &amp; integrity.</div>':''}
+ <h2 style="margin:0 0 4px">${g}, ${esc(U.name.split(' ')[0])}</h2><p class="note" style="margin:0 0 14px">${H}</p>
+ <div class="row" style="margin:0 0 18px">${TABS[U.role].slice(1).map(t=>`<button class="btn o s" data-t="${t[0]}">${t[1]}</button>`).join('')}${U.role==='Approver'?`<button class="btn s ${U.away?'':'o'}" data-a="away">${U.away?'You are away. Mark me available':'Mark me as away'}</button>`:''}</div>
+ <div class="tiles">${T.map((t,i)=>`<div class="tile ${i==3?'hot':''}" data-f="${['Pending','Approved','Out','Overdue'][i]}"><b>${t[1]}</b>${t[0]}</div>`).join('')}</div>
+ <div class="hm2"><div class="card"><h2>Needs your action</h2>${tasks()}</div><div class="card"><h2>Overview</h2><p class="note">Avg. approval time: <b>${avg}</b><br>On-time returns: <b>${ot}</b></p>${['Pending','Approved','Released','Closed','Rejected','Voided'].map(x=>{const k=c(p=>p.status===x);return `<div class="bar" data-f="${x}"><span>${x}</span><i style="width:${v.length?k/v.length*100:0}%"></i><b>${k}</b></div>`}).join('')}</div></div>
+ <div class="card"><h2>Latest passes</h2>${tbl(v.slice(0,6))}</div>`}
+
+const ascii=t=>String(t==null?'':t).replace(/[^\x20-\x7E]/g,'').trim();
+const core=p=>h53([p.id,p.to,JSON.stringify(p.items),p.tr,p.pl,p.rt,p.rd].join('|')).slice(0,8);
+function qrText(p){const it=p.items.map(i=>(i.q+' '+ascii(i.u)+' '+ascii(i.d)).trim()).join('; ').slice(0,240);
+ return ['EGP|'+p.id,'To: '+ascii(p.to).slice(0,60),'From: '+ascii(p.dept)+' / '+ascii(p.by),'Items: '+it,'Truck: '+ascii(p.tr+' '+p.pl),'Approver: '+ascii(p.approver||p.apn||'pending'),'Appr-at: '+ascii((p.log.slice().reverse().find(l=>l.a==='Approved')||{}).t||''),'Return: '+(p.rt==='For return'?'by '+p.rd:'Not for return'),'Filed: '+p.day,'Chk: '+core(p)].join('\n')}
+function parseQr(t){t=String(t);const m=t.match(/EGP\|([A-Z]{2,6}-\d{4}-\d{5})/i);if(!m)return null;const g=k=>{const r=t.match(new RegExp('^'+k+': (.*)$','m'));return r?r[1].trim():''};
+ return{id:m[1].toUpperCase(),to:g('To'),from:g('From'),items:g('Items'),truck:g('Truck'),approver:g('Approver'),aat:g('Appr-at'),ret:g('Return'),filed:g('Filed'),chk:g('Chk')}}
+function handleScan(raw){raw=String(raw||'').trim();if(!raw)return toast('Scan the QR code or enter the pass number.');const q=parseQr(raw),id=q?q.id:raw.toUpperCase(),p=D.passes.find(x=>x.id===id);
+ if(!p&&!q)return toast('No pass with that number.');scanModal(p,q)}
+function scanModal(p,q){
+ const d=p?{id:p.id,to:p.to,from:p.dept+' / '+p.by,items:p.items.map(i=>(i.q+' '+i.u+' '+i.d).trim()).join('; '),truck:(p.tr+' '+p.pl).trim(),approver:p.approver||p.apn||'Not yet approved',ret:p.rt==='For return'?'Return by '+p.rd:'Not for return',filed:p.day}:q;
+ const bad=!!(p&&q&&q.chk&&q.chk!==core(p));const AL=p&&p.log.slice().reverse().find(l=>l.a==='Approved');let cls,vd;
+ if(!p){cls='wa';vd='Not found in this system. The QR code says: '+(q&&q.approver&&q.approver!=='pending'?'approved by '+esc(q.approver)+(q.aat?' on '+esc(q.aat):''):'not approved')+'. Confirm with the approver before releasing.'}
+ else if(p.status==='Approved'){cls='ok';vd='✓ VERIFIED: This gate pass was APPROVED by '+esc(p.approver||'the approver')+(AL?' on '+esc(AL.t):'')+'.'+(U.role==='Security'?' OK to release after you check the truck.':'')}
+ else if(p.status==='Pending'){cls='no';vd='NOT APPROVED YET. Do not release.'}
+ else if(p.status==='Released'&&p.rt==='For return'){cls='wa';vd='ALREADY OUT ON LOAN. Use this scan to receive the return.'}
+ else if(p.status==='Released'||p.status==='Closed'){cls='wa';vd='Already completed ('+p.status+').'}
+ else{cls='no';vd=p.status.toUpperCase()+'. Do not release.'}
+ const rel=p&&!bad&&allowed('release',p),ret=p&&!bad&&allowed('return',p);
+ let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}m.className='ov';m.dataset.id=d.id;
+ m.innerHTML=`<div class="mb"><div class="note">Gate pass verification</div><div class="no">${esc(d.id)}</div>${p?`<div style="margin-top:6px">${chip(p)}</div>`:''}
+ ${bad?'<div class="vd no">The details on this QR code do not match the system record. Do not release. Check with the approver.</div>':`<div class="vd ${cls}">${vd}</div>`}
+ <div class="kv"><div><b>Despatched to</b>${esc(d.to)||'–'}</div><div><b>Truck / plate</b>${esc(d.truck)||'–'}</div><div><b>Item status</b>${esc(d.ret)||'–'}</div></div><h3>Check these items on the truck</h3><ul class="il">${(d.items||'').split('; ').filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>–</li>'}</ul><details class="md"><summary>More details</summary><div class="kv"><div><b>From</b>${esc(d.from)||'–'}</div><div><b>Approved by</b>${esc(d.approver)||'–'}</div><div><b>Filed</b>${esc(d.filed)||'–'}</div></div></details>
+ ${rel||ret?`<label style="margin-top:12px">Gate note (optional)<textarea id="note" rows="2"></textarea></label>`:''}
+ <div class="row">${rel?'<button class="btn ok" data-a="mact" data-x="release">Release at gate</button>':''}${ret?'<button class="btn ok" data-a="mact" data-x="return">Mark as returned</button>':''}${p&&canView(p)?`<button class="btn o" data-a="mopen" data-id="${p.id}">Open full pass</button>`:''}<button class="btn o" data-a="mclose">Close</button></div></div>`}
+function closeModal(){const m=$('#modal');if(m)m.remove()}
+function modalAct(a){const m=$('#modal');if(!m)return;S.view=m.dataset.id;act(a);closeModal()}
+async function scan(){const bd=window.BarcodeDetector?new BarcodeDetector({formats:['qr_code']}):null;if(!bd&&!window.jsQR)return toast('This browser cannot scan QR codes. Use Chrome or Edge, or type the pass number.');
+ try{const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}),v=$('#cam'),cv=document.createElement('canvas');window._cam=st;v.style.display='block';v.srcObject=st;await v.play();
+  const t=setInterval(async()=>{try{let raw='';if(bd){const r=await bd.detect(v);raw=r[0]?r[0].rawValue:''}else if(v.videoWidth){cv.width=v.videoWidth;cv.height=v.videoHeight;const x=cv.getContext('2d');x.drawImage(v,0,0);const im=x.getImageData(0,0,cv.width,cv.height),r=jsQR(im.data,im.width,im.height);raw=r?r.data:''}
+   if(raw){clearInterval(t);st.getTracks().forEach(x=>x.stop());window._cam=null;v.style.display='none';handleScan(raw)}}catch(e){}},400)}catch(e){toast('Camera not available.')}}
+const aprs=dept=>D.users.filter(u=>u.role==='Approver'&&u.active&&u.dept===dept&&(!U||u.email!==U.email));
+const apName=e=>{const u=D.users.find(x=>x.email===e);return u?u.name+', '+u.title:''};
+function apOpts(dept,cur){return '<option value="">Any available approver in '+esc(dept)+'</option>'+aprs(dept).map(u=>`<option value="${esc(u.email)}" ${u.away?'disabled':''} ${u.email===cur?'selected':''}>${esc(u.name)} (${esc(u.title)})${u.away?' · unavailable':''}</option>`).join('')}
+function reassignCard(p){if(p.status!=='Pending'||!(p.byId===U.email||U.role==='Admin'||(U.role==='Approver'&&p.ap===U.email)))return '';
+ return `<div class="card np"><h3 style="margin-top:0">Change approver</h3><p class="note">Now: ${esc(p.apn||'Any available approver')}. Use this if the selected approver is not available.</p><div class="row" style="margin-top:0"><select id="ra" style="max-width:340px">${apOpts(p.dept,p.ap)}</select><button class="btn s" data-a="reassign">Save</button></div></div>`}
+function reassign(){const p=D.passes.find(x=>x.id===S.view),v=$('#ra').value;if(!p||p.status!=='Pending'||!(p.byId===U.email||U.role==='Admin'||(U.role==='Approver'&&p.ap===U.email)))return toast('You cannot change this approver.');
+ const u=D.users.find(x=>x.email===v);if(u&&u.away)return toast('That approver is unavailable.');p.ap=v;p.apn=v?apName(v):'';p.log.push({t:now(),ts:Date.now(),w:U.name+' ('+U.title+')',a:'Approver changed',n:'Now: '+(p.apn||'any available approver')});seal(p);commit();render();toast('Approver updated.')}
+function toggleAway(){if(U.role!=='Approver')return;U.away=!U.away;commit();render();toast(U.away?'You are marked unavailable. Requesters cannot select you.':'You are marked available.')}
+
+render();
+</script><script>
+/* v7 additions: role-based views and organised lists */
+const tblFull=window.tbl,origDetail=window.detail;
+const nxt=p=>{const R=U.role,L=p.log[p.log.length-1]||{};
+ if(p.status==='Pending')return R==='Approver'?'Waiting for your review':'Waiting for '+(p.apn||'an approver');
+ if(p.status==='Approved')return R==='Security'?'Check the truck, then release':R==='Requester'?'Approved: print for the driver':'Approved, waiting at the gate';
+ if(p.status==='Released')return p.rt==='For return'?(overdue(p)?'Overdue: was due '+p.rd:'Out on loan, back by '+p.rd):'Left the factory';
+ if(p.status==='Rejected')return 'Rejected'+(L.n?': '+L.n:'');
+ return p.status==='Closed'?'Completed':'Cancelled'};
+const ago=p=>{const h=Math.max(0,Math.round((Date.now()-(p.ts||Date.now()))/36e5));return h<1?'just now':h<48?h+' h ago':Math.round(h/24)+' days ago'};
+const isDone=p=>p.status==='Closed'||p.status==='Rejected'||p.status==='Voided';
+const needs=p=>{const R=U.role;return R==='Approver'?canApprove(p):R==='Security'?(p.status==='Approved'||overdue(p)):R==='Requester'?(p.byId===U.email&&(p.status==='Approved'||p.status==='Rejected'||overdue(p))):(overdue(p)||!okSum(p))};
+const CF=[['All',()=>1],['Pending',p=>p.status==='Pending'],['Approved',p=>p.status==='Approved'],['Out on loan',p=>p.status==='Released'&&p.rt==='For return'],['Overdue',overdue],['Done',isDone]];
+const mid=p=>{const R=U.role,t=amt(p);
+ if(R==='Approver')return esc(p.by)+' · '+p.items.length+' item(s)'+(t?' · ₱'+t.toLocaleString():'')+' · '+ago(p);
+ if(R==='Security')return esc((p.tr+' '+p.pl).trim()||'No truck info')+' · '+p.items.length+' item(s)';
+ if(R==='Requester')return esc(nxt(p));
+ return esc(p.by)+' · '+esc(p.dept)};
+const pchips=p=>'<span class="chip '+p.status+'">'+G[p.status]+' '+p.status+'</span>'+(overdue(p)?' <span class="chip Overdue">! Overdue</span>':'')+(p.hv?' <span class="chip">₱ High value</span>':'')+(p.rt==='For return'&&p.status!=='Released'?' <span class="chip FR">↺ For return</span>':'');
+const lbl=p=>canApprove(p)?'Review':(U.role==='Security'&&p.status==='Approved')?'Release':(U.role==='Security'&&p.status==='Released'&&p.rt==='For return')?'Receive return':'Open';
+const prow=(p,g)=>'<div class="pr '+g+'"><div><b>'+esc(p.to)+'</b><small>'+p.id+' · '+esc(p.day)+'</small></div><div class="n2">'+mid(p)+'</div><div>'+pchips(p)+'</div><button class="btn s '+(g==='g1'?'':'o')+'" data-v="'+p.id+'">'+lbl(p)+'</button><div class="itm"><b>Items:</b> '+(esc(itx(p,5))||'–')+'</div></div>';
+window.tbl=function(a){
+ if(S.tab==='recs'||S.view)return tblFull(a);
+ if(!a.length)return '<div class="empty">No passes to show.</div>';
+ if(!['mine','appr','all'].includes(S.tab))return '<div class="pl">'+a.map(p=>prow(p,needs(p)?'g1':isDone(p)?'g3':'g2')).join('')+'</div>';
+ const cf=S.cf||'All',sort=S.so||'new',pred=(CF.find(c=>c[0]===cf)||CF[0])[1];
+ const chips='<div class="fcs">'+CF.map(c=>'<button class="fc '+(c[0]===cf?'on':'')+'" data-cf="'+c[0]+'">'+c[0]+' <i>'+a.filter(c[1]).length+'</i></button>').join('')+'<select id="cs" aria-label="Sort"><option value="new"'+(sort==='new'?' selected':'')+'>Newest first</option><option value="old"'+(sort==='old'?' selected':'')+'>Oldest first</option><option value="od"'+(sort==='od'?' selected':'')+'>Overdue first</option></select></div>';
+ let b=a.filter(pred).slice();
+ b.sort((x,y)=>sort==='old'?x.ts-y.ts:sort==='od'?(overdue(y)-overdue(x))||(y.ts-x.ts):y.ts-x.ts);
+ if(U.role==='Approver')b.sort((x,y)=>(needs(y)&&y.hv?1:0)-(needs(x)&&x.hv?1:0));
+ const lim=S.sh||10,G3=[['Needs your action','g1',b.filter(needs)],['In progress','g2',b.filter(p=>!needs(p)&&!isDone(p))],['Completed, rejected or cancelled','g3',b.filter(p=>!needs(p)&&isDone(p))]];
+ let shown=0;const out=G3.filter(g=>g[2].length).map(g=>{const rows=g[2].filter(()=>shown++<lim*3).slice(0,lim);const more=g[2].length>rows.length?'<button class="btn o s" data-cf-more="1">Show more ('+(g[2].length-rows.length)+')</button>':'';const body='<div class="pl">'+rows.map(p=>prow(p,g[1])).join('')+'</div>'+more;
+  return g[1]==='g3'?'<details class="gp g3"'+(cf==='Done'?' open':'')+'><summary class="gh">'+g[0]+' <i>'+g[2].length+'</i></summary>'+body+'</details>':'<div class="gp '+g[1]+'"><div class="gh">'+g[0]+' <i>'+g[2].length+'</i></div>'+body+'</div>'}).join('');
+ return chips+(out||'<div class="empty">Nothing under “'+cf+'”.</div>')};
+document.addEventListener('click',e=>{const c=e.target.closest('[data-cf],[data-cf-more],[data-t]');if(!c)return;
+ if(c.dataset.t){S.cf='All';S.sh=10;S.so='new';return}
+ if(c.dataset.cf){S.cf=c.dataset.cf;S.sh=10}else S.sh=(S.sh||10)+10;render()});
+document.addEventListener('change',e=>{if(e.target.id==='cs'){S.so=e.target.value;render()}});
+window.addEventListener('beforeprint',()=>document.querySelectorAll('details.md').forEach(d=>d.open=true));
+window.detail=function(p){
+ if(!p||!canView(p))return '<div class="empty">Pass not found, or you don’t have access to it.</div>';
+ if(U.role==='Admin')return origDetail(p);
+ const R=U.role,tot=amt(p),ret=p.rt==='For return'?'For return, back by '+esc(p.rd):'Not for return';let act='';
+ if(canApprove(p))act='<label>Note (required to reject, or to approve a high-value pass)<textarea id="note" rows="2"></textarea></label><div class="row"><button class="btn ok" data-a="approve">Approve</button><button class="btn bad" data-a="reject">Reject</button></div>';
+ else if(allowed('release',p))act='<p class="note">Match the items and quantities on the truck, then release.</p><label>Gate note (optional)<textarea id="note" rows="2"></textarea></label><div class="row"><button class="btn ok" data-a="release">Release at gate</button></div>';
+ else if(allowed('return',p))act='<label>Return note, e.g. partial or damaged (optional)<textarea id="note" rows="2"></textarea></label><div class="row"><button class="btn ok" data-a="return">Mark as returned</button></div>';
+ const kv=a=>'<div class="kv" style="margin-top:12px">'+a.map(x=>'<div><b>'+x[0]+'</b>'+(x[1]===''||x[1]==null?'–':x[1])+'</div>').join('')+'</div>';
+ const gl={Requester:[['Despatched to',esc(p.to)],['Item status',ret],['Approver',esc(p.apn||'Any available approver')],['Filed',esc(p.day)]],
+  Approver:[['Requested by',esc(p.by)+' · '+esc(p.dept)],['Despatched to',esc(p.to)],['Total value',tot?'₱'+tot.toLocaleString()+(p.hv?' · High value':''):'–'],['Item status',ret],['Remarks',esc(p.rm)]],
+  Security:[['Despatched to',esc(p.to)],['Truck / plate',esc((p.tr+' '+p.pl).trim())],['Item status',ret],['Approved by',esc(p.approver||'Not yet approved')]]}[R];
+ const A=R==='Approver';
+ return '<div class="np row" style="margin:0 0 12px"><button class="btn o" data-a="back">← Back</button><button class="btn" data-a="pdf">Download PDF</button><button class="btn o" data-a="print">Print</button>'+(p.byId===U.email?'<button class="btn o" data-a="dup">Copy to new pass</button>':'')+(p.byId===U.email&&p.status==='Pending'?'<button class="btn bad" data-a="cancel">Cancel request</button>':'')+'</div>'+
+ '<div class="card pa"><div class="top"><div><div class="note">Electronic Gate Pass · Despatched at Tanauan Factory</div><div class="note" style="margin-top:6px">E-Pass No.</div><div class="no">'+p.id+'</div><div style="margin-top:6px">'+pchips(p)+'</div></div><div><div id="qr"></div><div class="note" style="text-align:center;font-size:11px;margin-top:4px">Scan at the gate</div></div></div>'+
+ steps(p)+'<div class="na">'+esc(nxt(p))+'</div>'+kv(gl)+
+ '<h3>Items</h3><div class="sc"><table><thead><tr><th>#</th><th>Description</th><th>Qty</th><th>Unit</th>'+(A?'<th>Amount (₱)</th>':'')+'</tr></thead><tbody>'+p.items.map((i,n)=>'<tr><td>'+(n+1)+'</td><td>'+esc(i.d)+'</td><td>'+esc(i.q)+'</td><td>'+esc(i.u)+'</td>'+(A?'<td>'+(i.a?Number(i.a).toLocaleString():'')+'</td>':'')+'</tr>').join('')+'</tbody></table></div>'+
+ '<details class="md"><summary>More details</summary>'+kv([['Date filed',esc(p.at)],['Requested by',esc(p.by)],['Department',esc(p.dept)],['Destination no.',esc(p.no)],['Trucker / plate',esc((p.tr+' '+p.pl).trim())],['Order ref.',esc((p.on+' '+p.od).trim())],['Gross / Tare / Net (kg)',esc(p.gr||'–')+' / '+esc(p.ta||'–')+' / '+esc(net(p)||'–')]].concat(Object.entries(p.refs).map(([k,v])=>[k,esc(v)])))+(A?'':'<h3>Remarks</h3><div>'+(esc(p.rm)||'–')+'</div>')+
+ '<h3>Approval trail</h3><ul class="log">'+p.log.map(l=>'<li>'+esc(l.t)+' · '+esc(l.w)+' · '+esc(l.a)+(l.n?' – '+esc(l.n):'')+'</li>').join('')+'</ul><div class="sig"><div>Approved by (Head / OIC)<br>'+(p.approver?'<b style="color:var(--ink)">'+esc(p.approver)+'</b>':'')+'</div><div>Received above articles in good order and condition – Name, signature, date</div></div></details></div>'+
+ (act?'<div class="card np">'+act+'</div>':'')+reassignCard(p)};
+/* v8: company email only, department, approver search */
+function apList(){const box=$('#apr'),inp=$('#f_aps');if(!box||!inp)return;const dd=($('#f_dept')||{}).value||U.dept,q=inp.value.trim().toLowerCase();
+ const m=D.users.filter(u=>u.role==='Approver'&&u.active&&u.dept===dd&&u.email!==U.email&&(!q||(u.name+' '+u.email+' '+u.title).toLowerCase().includes(q)));
+ box.innerHTML=m.length?m.map(u=>'<button type="button" class="apo" data-ap="'+esc(u.email)+'"'+(u.away?' disabled':'')+'><b>'+esc(u.name)+'</b> <span>'+esc(u.title)+' · '+esc(u.email)+(u.away?' · unavailable':'')+'</span></button>').join(''):'<div class="note" style="padding:8px">No approver in '+esc(dd)+' matches “'+esc(inp.value)+'”.</div>';box.style.display='block'}
+document.addEventListener('input',e=>{if(e.target.id==='f_aps'){$('#f_ap').value='';apList()}});
+document.addEventListener('focusin',e=>{if(e.target.id==='f_aps')apList()});
+document.addEventListener('change',e=>{if(e.target.id==='f_dept'&&$('#f_aps')){$('#f_aps').value='';$('#f_ap').value='';apList();$('#apr').style.display='none'}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ap],[data-mydept]');
+ if(b&&b.dataset.ap){const u=D.users.find(x=>x.email===b.dataset.ap);if(u){$('#f_ap').value=u.email;$('#f_aps').value=u.name+' ('+u.title+') · '+u.email;$('#apr').style.display='none'}return}
+ if(b&&b.dataset.mydept){const v=($('#s_dept')||{}).value;if(v&&U.role==='Requester'){U.dept=v;commit();render();toast('Department updated.')}return}
+ if(!e.target.closest('.apw')){const x=$('#apr');if(x)x.style.display='none'}});
+
+/* v9: personal passwords */
+const _en=new TextEncoder(),newSalt=()=>[...crypto.getRandomValues(new Uint8Array(12))].map(x=>x.toString(16).padStart(2,'0')).join('');
+async function hashPw(pw,salt){try{const k=await crypto.subtle.importKey('raw',_en.encode(pw),'PBKDF2',false,['deriveBits']),b=await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:_en.encode(salt),iterations:100000},k,256);return 'p:'+[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return 'w:'+h53(salt+pw)+h53(pw+salt)}}
+const pwOk=p=>p.length>=8&&/[A-Za-z]/.test(p)&&/\d/.test(p);
+const pwMsg='Password needs at least 8 characters, with letters and numbers.';
+function finish(d){d.fl=0;d.lu=0;U=d;S.tab=startTab(d);S.view=null;try{sessionStorage.setItem('egp_u',d.email)}catch(x){}commit();render()}
+function pwModal(d,title,note){let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}m.className='ov';
+ m.innerHTML='<div class="mb"><h2>'+title+'</h2><p class="note">'+note+'</p><label>New password<input id="np1" type="password" autocomplete="new-password"></label><label style="margin-top:8px">Confirm new password<input id="np2" type="password" autocomplete="new-password"></label><div class="row"><button class="btn" data-pw="save" data-e2="'+esc(d.email)+'">Save and sign in</button><button class="btn o" data-a="mclose">Cancel</button></div></div>';setTimeout(()=>{const x=$('#np1');if(x)x.focus()},50)}
+async function doLogin(){
+ const em=$('#em').value.trim().toLowerCase(),pw=($('#pw')||{}).value||'';
+ if(!okDomain(em))return toast('Sign in with your company email (@'+domOf()+').');
+ if(!pw)return toast('Enter your password.');
+ const d=D.users.find(x=>x.email===em);
+ if(!d||!d.active)return toast('Incorrect email or password.');
+ if(d.lu&&d.lu>Date.now())return toast('Too many wrong attempts. Try again in '+Math.ceil((d.lu-Date.now())/6e4)+' min.');
+ if(!d.pw)return pwModal(d,'Create your password','This account has no password yet. Choose one now. '+pwMsg);
+ if(await hashPw(pw,d.pw.s)!==d.pw.h){d.fl=(d.fl||0)+1;if(d.fl>=5){d.lu=Date.now()+3e5;d.fl=0}commit();return toast('Incorrect email or password.')}
+ if(d.must)return pwModal(d,'Choose a new password','You signed in with a temporary password. '+pwMsg);
+ finish(d)}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-pw],[data-rp]');if(!b)return;
+ if(b.dataset.pw==='save'){const d=D.users.find(x=>x.email===b.dataset.e2),a=$('#np1').value,c=$('#np2').value;if(!d)return;
+  if(!pwOk(a))return toast(pwMsg);if(a!==c)return toast('The two passwords do not match.');
+  const s=newSalt();d.pw={s,h:await hashPw(a,s)};d.must=false;closeModal();finish(d);toast('Password saved.')}
+ else if(b.dataset.pw==='chg'&&U){const o=$('#cp0').value,a=$('#cp1').value,c=$('#cp2').value;
+  if(U.pw&&await hashPw(o,U.pw.s)!==U.pw.h)return toast('Current password is not correct.');if(!pwOk(a))return toast(pwMsg);if(a!==c)return toast('The two passwords do not match.');
+  const s=newSalt();U.pw={s,h:await hashPw(a,s)};U.must=false;commit();render();toast('Password changed.')}
+ else if(b.dataset.rp&&U&&U.role==='Admin'){const u=D.users[+b.dataset.rp];if(!u)return;const t=prompt('Temporary password for '+u.name+' (min. 8 characters, letters and numbers). They must change it when they next sign in.');if(t==null)return;if(!pwOk(t))return toast(pwMsg);
+  const s=newSalt();u.pw={s,h:await hashPw(t,s)};u.must=true;u.fl=0;u.lu=0;adminLog('Set a temporary password for '+u.email);commit();render();toast('Temporary password set.')}});
+/* v10: admin can edit user details (including their own) */
+function euModal(i){const u=D.users[i];if(!u)return;let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}m.className='ov';
+ m.innerHTML='<div class="mb"><h2>Edit details</h2><div class="g"><label>Full name<input id="eu_name" value="'+esc(u.name)+'"></label><label>Company email<input id="eu_em" type="email" value="'+esc(u.email)+'"></label><label>Role<select id="eu_role">'+['Requester','Approver','Security','Admin'].map(r=>'<option'+(r===u.role?' selected':'')+'>'+r+'</option>').join('')+'</select></label><label>Department<input id="eu_dept" value="'+esc(u.dept)+'"></label><label>Title<input id="eu_title" value="'+esc(u.title)+'"></label></div><div class="row"><button class="btn" data-eus="'+i+'">Save</button><button class="btn o" data-a="mclose">Cancel</button></div></div>'}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-eu],[data-eus]');if(!b||!U||U.role!=='Admin')return;
+ if(b.dataset.eu!=null&&b.dataset.eu!==''&&!b.dataset.eus)return euModal(+b.dataset.eu);
+ const u=D.users[+b.dataset.eus];if(!u)return;const v=x=>$('#eu_'+x).value.trim(),em=v('em').toLowerCase(),old=u.email;
+ if(!v('name')||!v('dept'))return toast('Enter a name and department.');if(!okDomain(em))return toast('Use a company email (@'+domOf()+').');
+ if(D.users.some(x=>x!==u&&x.email===em))return toast('That email already belongs to someone else.');
+ if(u.role==='Admin'&&v('role')!=='Admin'&&D.users.filter(x=>x.role==='Admin'&&x.active).length<2)return toast('At least one active Admin is required.');
+ u.name=v('name');u.email=em;u.role=v('role');u.dept=v('dept');u.title=v('title')||v('role');
+ D.passes.forEach(p=>{let c=0;if(p.byId===old){p.byId=em;p.by=u.name;c=1}if(p.ap===old){p.ap=em;p.apn=apName(em);c=1}if(c)seal(p)});
+ if(u===U){try{sessionStorage.setItem('egp_u',em)}catch(x){}}
+ adminLog('Edited details of '+em);commit();closeModal();render();toast('Details saved.')});
+/* v11: pop-up verification for QR scans, open to every role */
+const _cm=window.closeModal;window.closeModal=function(){if(window._cam){window._cam.getTracks().forEach(x=>x.stop());window._cam=null}_cm()};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-vfy]');if(!b||!U)return;let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}m.className='ov';
+ m.innerHTML='<div class="mb"><h2>Verify a gate pass</h2><p class="note">Scan the QR code on the pass, or type the E-Pass No. to see whether it was approved.</p><div class="row" style="margin-top:0"><input id="gid" placeholder="e.g. TNN-2026-00001" style="flex:1;min-width:200px"><button class="btn" data-a="find">Find pass</button><button class="btn o" data-a="scan">Scan QR</button></div><video id="cam" playsinline style="display:none;width:100%;max-width:360px;border-radius:12px;margin-top:10px"></video><div class="row"><button class="btn o" data-a="mclose">Close</button></div></div>';setTimeout(()=>{const x=$('#gid');if(x)x.focus()},50)});
+/* v12: phone-camera QR opens a verification pop-up */
+const _qt=window.qrText,_hs=window.handleScan;
+const b64u=t=>btoa(t).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+window.qrText=function(p){const u=(D.cfg&&D.cfg.url)||'';if(!u)return _qt(p);
+ const al=(p.log.slice().reverse().find(l=>l.a==='Approved')||{}).t||'',c=x=>String(x==null?'':x).replace(/\|/g,'/');
+ const f=[p.id,ascii(p.to).slice(0,40),p.items.map(i=>(i.q+' '+ascii(i.u)+' '+ascii(i.d)).trim()).join('; ').slice(0,110),ascii((p.tr+' '+p.pl).trim()).slice(0,30),ascii(p.approver||'').slice(0,40),ascii(al),p.rt==='For return'?'by '+p.rd:'Not for return',p.status,core(p)].map(c);
+ return u.replace(/#.*$/,'')+'#v='+b64u(f.join('|'))};
+function decodeV(raw){const m=String(raw).match(/#v=([A-Za-z0-9_-]+)/);if(!m)return null;try{let t=m[1].replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';const a=atob(t).split('|');if(a.length<9)return null;return{id:a[0],to:a[1],items:a[2],truck:a[3],approver:a[4],aat:a[5],ret:a[6],st:a[7],chk:a[8]}}catch(e){return null}}
+window.handleScan=function(raw){const d=decodeV(raw);if(d)return showV(d);_hs(raw)};
+function showV(d){
+ const live=(D.passes||[]).find(x=>x.id===d.id&&core(x)===d.chk);
+ if(U&&live&&U.role==='Security'){closeModal();return scanModal(live,{id:d.id,to:d.to,from:'',items:d.items,truck:d.truck,approver:d.approver,ret:d.ret,filed:'',chk:d.chk,aat:d.aat})}
+ const st=live?live.status:d.st,ap=live?(live.approver||''):d.approver,al=live?((live.log.slice().reverse().find(l=>l.a==='Approved')||{}).t||''):d.aat;
+ const appr=!!ap&&['Approved','Released','Closed'].includes(st),rel=st==='Released'||st==='Closed';
+ let cls,ic,big,sub;
+ if(appr&&st==='Approved'){cls='ok';ic='✓';big='APPROVED';sub='Approved by '+esc(ap)+(al?' on '+esc(al):'')}
+ else if(appr&&st==='Released'){cls='ok';ic='✓';big='APPROVED · RELEASED';sub='Approved by '+esc(ap)+(al?' on '+esc(al):'')+'. Items have left the gate.'}
+ else if(appr){cls='ok';ic='✓';big='COMPLETED';sub='Approved by '+esc(ap)+(al?' on '+esc(al):'')+'. Items returned.'}
+ else if(st==='Rejected'){cls='no';ic='✕';big='REJECTED';sub='This pass was rejected. Do not release.'}
+ else if(st==='Voided'){cls='no';ic='⊘';big='VOIDED';sub='This pass was cancelled. Do not release.'}
+ else{cls='wa';ic='…';big='NOT YET APPROVED';sub='Waiting for the department head or OIC. Do not release.'}
+ const items=(d.items||'').split('; ').filter(Boolean),c=(l,v,w)=>'<div class="vc-c'+(w?' w':'')+'"><small>'+l+'</small><div>'+(v||'–')+'</div></div>';
+ const step=(l,on,n)=>'<div class="vc-s '+(on?'d':'')+'"><i>'+(on?'✓':n)+'</i>'+l+'</div>';
+ let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}m.className='ov';
+ m.innerHTML='<div class="mb"><div class="vc-top">Electronic Gate Pass · Tanauan Factory</div><div class="no" style="margin-top:2px">'+esc(d.id)+'</div>'
+ +'<div class="vc-st '+cls+'" role="status"><div class="vc-ic"><i>'+ic+'</i></div><div><b>'+big+'</b><span>'+sub+'</span></div></div>'
+ +'<div class="vc-grid">'+c('Despatched to',esc(d.to),1)+c('Truck / plate',esc(d.truck))+c('Item status',esc(d.ret))+c('Approved by',appr?esc(ap):'Not yet approved')+c('Approved on',appr?esc(al):'–')+'</div>'
+ +'<h3>Items</h3><table class="vc-it"><tbody>'+(items.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x)+'</td></tr>').join('')||'<tr><td></td><td>–</td></tr>')+'</tbody></table>'
+ +(st==='Rejected'||st==='Voided'?'':'<div class="vc-tl">'+step('Submitted',1,1)+step('Approved',appr,2)+step('Released',rel,3)+'</div>')
+ +'<p class="note" style="margin-top:12px">'+(live?'Checked against the live record in this system.':'Read from the QR code, which shows the status when it was made. Sign in to check the live record.')+'</p><div class="row"><button class="btn o" data-vclose="1">Close</button></div></div>'}
+document.addEventListener('click',e=>{if(e.target.closest('[data-vclose]')){closeModal();if(/#v=/.test(location.hash))try{history.replaceState(null,'',location.pathname+location.search)}catch(x){}}});
+window.addEventListener('hashchange',()=>{const d=decodeV(location.hash);if(d)showV(d)});
+
+render();
+if(/#v=/.test(location.hash)){const d0=decodeV(location.hash);if(d0)showV(d0)}
+</script>
+<script>
+/* v13: shared database, receiver, short QR, flow help */
+const PUB_URL='';
+const LOGO_M='data:image/jpeg;base64,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',LOGO_F='data:image/jpeg;base64,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';
+{const h=document.getElementById('hlogo');if(h)h.src=LOGO_M}
+const setLive=(m,t)=>{const l=$('#live');if(l){l.className='live '+m;l.textContent=t}};
+/* screens */
+const _lv=window.loginView;window.loginView=function(){_lv();const b=document.querySelector('.lg-b');if(b)b.insertAdjacentHTML('afterbegin','<img class="lgo" alt="Nestlé" src="'+LOGO_F+'">')};
+const _fm=window.form;window.form=function(){return _fm()
+ .replace('<h2>New gate pass</h2>','<h2>New gate pass</h2><p class="note" style="margin:-4px 0 14px">After you submit, your Department Head or OIC approves it. Security then checks the truck against the pass and releases it at the gate.</p>')
+ .replace('<label>Trucker<input id="f_tr"></label>','<label>Receiver name *<input id="f_rc" placeholder="Person who will receive the items"></label><label>Receiver contact / company<input id="f_rcc" placeholder="Phone or company"></label><label>Trucker<input id="f_tr"></label>')};
+const _sub=window.submit;window.submit=function(){const v=i=>(($('#'+i)||{}).value||'').trim(),rc=v('f_rc'),rcc=v('f_rcc');
+ if(!rc)return toast('Enter who will receive the items.');
+ const n=D.passes.length;_sub();
+ if(D.passes.length>n){const p=D.passes[0];p.rc=rc;p.rcc=rcc;p.log[0].n=((p.log[0].n||'')+' Receiver: '+rc).trim();seal(p);commit();render()}};
+const _dup=window.dup;window.dup=function(){const p=D.passes.find(x=>x.id===S.view);_dup();if(p&&$('#f_rc')){$('#f_rc').value=p.rc||'';$('#f_rcc').value=p.rcc||''}};
+const rcLine=p=>esc(p.rc)+(p.rcc?' · '+esc(p.rcc):'');
+const rcHtml=p=>p.rc?'<h3>Receiver</h3><div class="kv"><div><b>Name</b>'+esc(p.rc)+'</div><div><b>Contact / company</b>'+(esc(p.rcc)||'–')+'</div></div>':'';
+const _dt=window.detail;window.detail=function(p){const h=_dt(p);if(!p||!canView(p))return h;
+ return h.replace('<div class="note">Electronic Gate Pass',()=>'<img class="plogo" alt="Nestlé" src="'+LOGO_F+'"><div class="note">Electronic Gate Pass')
+  .replace(/<div class="note"[^>]*>Scan at the gate<\/div>/,()=>'<div class="qrcap">Scan to check approval</div>')
+  .replace(/<h3>(Items|References)<\/h3>/,(m,a)=>rcHtml(p)+'<h3>'+a+'</h3>')
+  .replace(/(Received above articles[^<]*)<\/div>/,(m,a)=>a+(p.rc?'<br><b style="color:var(--ink)">'+esc(p.rc)+'</b>':'')+'</div>')};
+const _sv=window.showV;window.showV=function(d){_sv(d);const p=D.passes.find(x=>x.id===d.id),g=document.querySelector('#modal .vc-grid');if(g&&p&&p.rc)g.insertAdjacentHTML('afterbegin','<div class="vc-c w"><small>Receiver</small><div>'+rcLine(p)+'</div></div>')};
+const _sm=window.scanModal;window.scanModal=function(p,q){_sm(p,q);const k=document.querySelector('#modal .kv');if(k&&p&&p.rc)k.insertAdjacentHTML('afterbegin','<div><b>Receiver</b>'+rcLine(p)+'</div>')};
+window.help=function(){const st=[['Request','Staff files the pass: items, destination, receiver and truck.'],['Approve','The Department Head or OIC reviews it. Nobody approves their own pass.'],['Gate release','Security scans the QR, checks the items and truck, then releases.'],['Return','For loaned items, Security scans again when they come back.']],
+ w=[['Requester','Files passes and prints the approved pass for the driver.'],['Department Head / OIC','Approves or rejects passes from their department.'],['Security guard','The only role that releases items at the gate and receives returns.'],['Receiver','Named on the pass. Signs the printed copy when the items arrive.'],['Anyone who scans','Sees whether the pass is approved. Cannot release anything.']];
+ return '<div class="card"><h2>How a gate pass moves</h2><div class="flow">'+st.map((s,i)=>'<div class="fs"><i>'+(i+1)+'</i><b>'+s[0]+'</b><span>'+s[1]+'</span></div>').join('')+'</div></div><div class="card"><h2>Who does what</h2><table><tbody>'+w.map(r=>'<tr><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td></tr>').join('')+'</tbody></table></div>'};
+/* short QR: link + pass number only. The live record gives the answer */
+window.qrText=p=>((D.cfg&&D.cfg.url)||PUB_URL||location.href.split('#')[0])+'#'+p.id;
+const _rd=window.render;window.render=function(){_rd();const q=$('#qr'),p=S.view&&D.passes.find(x=>x.id===S.view);if(q&&p&&window.QRCode){q.innerHTML='';new QRCode(q,{text:qrText(p),width:138,height:138,correctLevel:QRCode.CorrectLevel.L})}};
+const PID=/^#([A-Za-z]{2,6}-\d{4}-\d{5})$/;
+const liveD=p=>({id:p.id,to:p.to,items:p.items.map(i=>(i.q+' '+i.u+' '+i.d).trim()).join('; '),truck:(p.tr+' '+p.pl).trim(),approver:p.approver||'',aat:'',ret:p.rt==='For return'?'by '+p.rd:'Not for return',st:p.status,chk:core(p)});
+function modalMsg(t){let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}m.className='ov';m.innerHTML='<div class="mb"><h2 style="margin-bottom:8px">'+esc(t)+'</h2><div class="row"><button class="btn o" data-vclose="1">Close</button></div></div>'}
+function openHash(){const m=location.hash.match(PID);if(!m)return;if(DB.db&&!DB.ready)return modalMsg('Checking the live record…');
+ const p=D.passes.find(x=>x.id===m[1].toUpperCase());if(!p)return modalMsg('No pass '+m[1].toUpperCase()+' in this system. Do not release.');showV(liveD(p))}
+window.addEventListener('hashchange',openHash);
+const _hs2=window.handleScan;window.handleScan=function(raw){raw=String(raw||'').trim();const m=raw.match(/(?:^|#)([A-Za-z]{2,6}-\d{4}-\d{5})\s*$/);
+ if(m){const p=D.passes.find(x=>x.id===m[1].toUpperCase());if(!p)return toast('No pass with that number.');closeModal();return showV(liveD(p))}return _hs2(raw)};
+const _cm3=window.closeModal;window.closeModal=function(){_cm3();if(PID.test(location.hash))try{history.replaceState(null,'',location.pathname+location.search)}catch(x){}};
+/* shared database: one document per pass and per user, live on every device */
+const DB={db:null,ready:false,sync:{},fl:{},q:Promise.resolve(),t:null,lp:null};
+const rawSave=Store.save;
+Store.save=function(d){if(DB.db&&DB.ready){clearTimeout(DB.t);DB.t=setTimeout(pushDb,250);return true}return rawSave(d)};
+function put(fn,k){DB.q=DB.q.then(fn).then(()=>{delete DB.fl[k]}).catch(()=>{DB.sync[k]='?';delete DB.fl[k];toast('Could not save to the shared database. Check the internet connection and the Firebase rules.')})}
+function pushDb(){DB.t=null;if(!DB.db||!DB.ready)return;const want={};
+ D.passes.forEach(p=>want['passes/'+p.id]=p);D.users.forEach(u=>want['users/'+u.email]=u);
+ want['meta/main']={seq:D.seq||{},cfg:D.cfg||{},admin:(D.admin||[]).slice(-200),fb:(D.fb||[]).slice(-100),lb:D.lastBackup||null};
+ Object.keys(want).forEach(k=>{const s=stab(want[k]);if(DB.sync[k]===s)return;const nw=k.indexOf('passes/')===0&&!(k in DB.sync);DB.sync[k]=s;DB.fl[k]=want[k];
+  put(async()=>{if(nw){let g=await DB.db.doc(k).get();if(g.exists){const o=want[k];DB.sync[k]=null;delete DB.fl[k];do{o.id=nextNo();g=await DB.db.doc('passes/'+o.id).get()}while(g.exists);seal(o);
+    if(S.view===k.slice(7))S.view=o.id;DB.sync['passes/'+o.id]=stab(o);DB.fl['passes/'+o.id]=o;toast('Pass number changed to '+o.id+' because another pass was filed at the same time.');render();return DB.db.doc('passes/'+o.id).set(JSON.parse(stab(o)))}}
+   return DB.db.doc(k).set(JSON.parse(s))},k)});
+ Object.keys(DB.sync).forEach(k=>{if(DB.sync[k]!=null&&!(k in want)){DB.sync[k]=null;put(()=>DB.db.doc(k).delete(),k)}})}
+const busy=()=>{const a=document.activeElement;return !!$('#modal')||(S.tab==='new'&&!S.view)||(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.id!=='gs')||($('#pop')&&$('#pop').style.display==='block')};
+function afterSnap(first){if(U)U=D.users.find(x=>x.email===U.email&&x.active)||null;
+ if(!first&&(!U||busy())){DB.stale=1;return}
+ const n=U?pend():0;if(!first&&DB.lp!=null&&n>DB.lp)toast('A new item needs your attention.');DB.lp=n;render()}
+document.addEventListener('focusout',()=>setTimeout(()=>{if(DB.stale&&DB.ready&&!busy()){DB.stale=0;afterSnap()}},80));
+function applyCol(k,s){if(DB.t){clearTimeout(DB.t);pushDb()}
+ const col=k==='p'?'passes':'users',key=o=>k==='p'?o.id:o.email,L=[];
+ s.docs.forEach(d=>{const o=d.data(),kk=col+'/'+d.id;if(!(kk in DB.fl))DB.sync[kk]=stab(o);L.push(DB.fl[kk]||JSON.parse(JSON.stringify(o)))});
+ const ids=new Set(L.map(key));Object.keys(DB.fl).forEach(kk=>{if(kk.indexOf(col+'/')===0&&DB.fl[kk]&&!ids.has(kk.slice(col.length+1)))L.push(DB.fl[kk])});
+ if(k==='p'){L.sort((a,b)=>(b.ts||0)-(a.ts||0));D.passes=L}else D.users=L.length?L:seed().users;
+ if(DB.ready)afterSnap()}
+function applyMeta(s){if(s.exists&&!DB.fl['meta/main']){const m=s.data();DB.sync['meta/main']=stab(m);D.seq=m.seq||{};D.cfg=m.cfg&&Object.keys(m.cfg).length?JSON.parse(JSON.stringify(m.cfg)):undefined;D.admin=JSON.parse(JSON.stringify(m.admin||[]));D.fb=JSON.parse(JSON.stringify(m.fb||[]));D.lastBackup=m.lb?JSON.parse(JSON.stringify(m.lb)):null}
+ if(DB.ready)afterSnap()}
+const _dl2=window.doLogin;window.doLogin=async function(){if(DB.db&&!DB.ready)return toast('Connecting to the shared database. Try again in a moment.');return _dl2()};
+window.addEventListener('pagehide',()=>{if(DB.t){clearTimeout(DB.t);pushDb()}});
+/* admin: reset a user's password (dialog instead of prompt) */
+const _us=window.users;window.users=function(){return _us().replace(/Set temp password/g,'Reset password')};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rp]');if(!b)return;e.stopImmediatePropagation();if(!U||U.role!=='Admin')return;const u=D.users[+b.dataset.rp];if(!u)return;
+ let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';document.body.appendChild(m)}m.className='ov';
+ m.innerHTML='<div class="mb"><h2>Reset password</h2><p class="note">Set a temporary password for <b>'+esc(u.name)+'</b>. They must choose their own the next time they sign in. '+pwMsg+'</p><label>Temporary password<input id="tp" type="text" autocomplete="off"></label><div class="row" style="margin-top:8px"><button class="btn o s" data-tpg="1">Generate one</button></div><div class="row"><button class="btn" data-tps="'+D.users.indexOf(u)+'">Save password</button><button class="btn o" data-a="mclose">Cancel</button></div></div>';setTimeout(()=>{const x=$('#tp');if(x)x.focus()},50)},true);
+document.addEventListener('click',async e=>{if(e.target.closest('[data-tpg]')){const c='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';$('#tp').value=[...crypto.getRandomValues(new Uint8Array(8))].map(x=>c[x%c.length]).join('')+'7a';return}
+ const s=e.target.closest('[data-tps]');if(!s||!U||U.role!=='Admin')return;const u=D.users[+s.dataset.tps],t=$('#tp').value;if(!u)return;if(!pwOk(t))return toast(pwMsg);
+ const sl=newSalt();u.pw={s:sl,h:await hashPw(t,sl)};u.must=true;u.fl=0;u.lu=0;adminLog('Reset password for '+u.email);commit();closeModal();render();toast('Password reset. Give '+u.name.split(' ')[0]+' the temporary password.')});
+(async function(){let db=null;try{db=await openDb()}catch(e){}
+ const off=()=>{DB.db=null;setLive('','This device only');openHash()};
+ if(!db)return off();
+ DB.db=db;setLive('','Connecting…');const got={},mk=(k,s)=>{if(s.metadata&&s.metadata.fromCache)return;got[k]=1;if(got.p&&got.u&&got.m&&!DB.ready){DB.ready=true;clearTimeout(tm);setLive('on','Live · shared');afterSnap(1);openHash()}};
+ const tm=setTimeout(()=>{if(!DB.ready){off();toast('Could not reach the shared database. Changes stay on this device.')}},10000),er=()=>{if(!DB.ready){clearTimeout(tm);off()}};
+ db.collection('passes').onSnapshot(s=>{applyCol('p',s);mk('p',s)},er);
+ db.collection('users').onSnapshot(s=>{applyCol('u',s);mk('u',s)},er);
+ db.doc('meta/main').onSnapshot(s=>{applyMeta(s);mk('m',s)},er)})();
+</script>
+<script>
+/* v14: reliable print, PDF download, and item names everywhere */
+async function dl(name,data,type){
+ /* 1) platform save (needs the "downloads" capability when published) */
+ try{const d=window.claude&&await claude.use('downloads');if(d){await d.save({filename:name,data});return true}}
+ catch(e){if(e&&e.code==='declined')return false;if(e&&e.code==='rejected_extension')return false}
+ /* 2) plain browser download (works when the file is opened from a computer or hosted normally) */
+ try{const b=data instanceof Blob?data:new Blob([data],{type:type||'application/octet-stream'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},4000);return true}catch(e){return false}}
+
+const money=n=>n?Number(n).toLocaleString():'';
+function qrData(text){return new Promise(res=>{try{const h=document.createElement('div');h.style.cssText='position:fixed;left:-9999px;top:0';document.body.appendChild(h);new QRCode(h,{text,width:240,height:240,correctLevel:QRCode.CorrectLevel.L});
+ setTimeout(()=>{let u='';const c=h.querySelector('canvas'),i=h.querySelector('img');try{u=c?c.toDataURL('image/png'):(i&&i.src)||''}catch(e){}h.remove();res(u)},60)}catch(e){res('')}})}
+const stamp=()=>'Printed '+now()+' by '+(U?U.name:'');
+
+/* ---------- printable HTML (used by Print) ---------- */
+async function passHtml(p){
+ const qr=await qrData(qrText(p)),R=Object.entries(p.refs||{}).filter(x=>x[1]);
+ return '<!doctype html><html><head><meta charset="utf-8"><title>'+esc(p.id)+'</title><style>@page{size:A4;margin:12mm}body{font:13px/1.4 Arial,Helvetica,sans-serif;color:#111;margin:0}h1{font-size:20px;margin:0}h3{font-size:13px;margin:16px 0 4px;border-bottom:1px solid #999;padding-bottom:2px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.no{font-size:22px;font-weight:700}.g{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}.g div b{display:block;font-size:10px;text-transform:uppercase;color:#555}table{width:100%;border-collapse:collapse}th,td{border:1px solid #888;padding:5px 6px;text-align:left;vertical-align:top}th{background:#eee;font-size:11px}.sg{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:46px}.sg div{border-top:1px solid #111;padding-top:4px;font-size:11px}.ft{margin-top:14px;font-size:10px;color:#666}</style></head><body>'
+ +'<div class="top"><div><img src="'+LOGO_F+'" style="height:42px"><h1>Electronic Gate Pass</h1><div>Despatched at Tanauan Factory</div><div style="margin-top:8px">E-Pass No.</div><div class="no">'+esc(p.id)+'</div><div>Status: <b>'+esc(p.status)+'</b> | '+esc(p.rt)+(p.rt==='For return'?' | back by '+esc(p.rd):'')+'</div></div>'+(qr?'<div style="text-align:center"><img src="'+qr+'" style="width:120px;height:120px"><div style="font-size:10px">Scan to check approval</div></div>':'')+'</div>'
+ +'<h3>Pass details</h3><div class="g"><div><b>Date filed</b>'+esc(p.at)+'</div><div><b>Requested by</b>'+esc(p.by)+' ('+esc(p.dept)+')</div><div><b>Despatched to</b>'+esc(p.to)+'</div><div><b>Destination no.</b>'+(esc(p.no)||'-')+'</div><div><b>Receiver</b>'+(esc(p.rc)||'-')+(p.rcc?' | '+esc(p.rcc):'')+'</div><div><b>Trucker / plate</b>'+(esc((p.tr+' '+p.pl).trim())||'-')+'</div><div><b>Order ref.</b>'+(esc((p.on+' '+p.od).trim())||'-')+'</div><div><b>Approved by</b>'+(esc(p.approver)||'-')+'</div></div>'
+ +(R.length?'<h3>References</h3><div class="g">'+R.map(x=>'<div><b>'+esc(x[0])+'</b>'+esc(x[1])+'</div>').join('')+'</div>':'')
+ +'<h3>Items / materials</h3><table><thead><tr><th>#</th><th>Description</th><th>Other ref.</th><th>Qty</th><th>Unit</th><th>Amount (PHP)</th></tr></thead><tbody>'+p.items.map((i,n)=>'<tr><td>'+(n+1)+'</td><td>'+esc(i.d)+'</td><td>'+esc(i.r)+'</td><td>'+esc(i.q)+'</td><td>'+esc(i.u)+'</td><td>'+money(i.a)+'</td></tr>').join('')+'<tr><td></td><td colspan="4"><b>Total</b></td><td><b>'+money(amt(p))+'</b></td></tr></tbody></table>'
+ +'<div class="g" style="margin-top:8px"><div><b>Gross (kg)</b>'+(esc(p.gr)||'-')+'</div><div><b>Tare (kg)</b>'+(esc(p.ta)||'-')+'</div><div><b>Net (kg)</b>'+(esc(net(p))||'-')+'</div></div>'
+ +'<h3>Remarks</h3><div>'+(esc(p.rm)||'-')+'</div>'
+ +'<h3>Approval trail</h3>'+p.log.map(l=>'<div>'+esc(l.t)+' | '+esc(l.w)+' | '+esc(l.a)+(l.n?' - '+esc(l.n):'')+'</div>').join('')
+ +'<div class="sg"><div>Approved by (Head / OIC)<br><b>'+esc(p.approver||'')+'</b></div><div>Received above articles in good order and condition - Name, signature, date'+(p.rc?'<br><b>'+esc(p.rc)+'</b>':'')+'</div></div><div class="ft">'+esc(stamp())+'</div></body></html>'}
+
+function reportHtml(a){
+ return '<!doctype html><html><head><meta charset="utf-8"><title>Gate pass records</title><style>@page{size:A4 landscape;margin:10mm}body{font:11px Arial,sans-serif;color:#111}h1{font-size:16px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #888;padding:4px 5px;text-align:left;vertical-align:top}th{background:#eee}</style></head><body><h1>Gate pass records - Tanauan Factory</h1><div>'+a.length+' record(s) | total declared value PHP '+money(a.reduce((s,p)=>s+amt(p),0))+' | '+esc(stamp())+'</div><table><thead><tr><th>E-Pass No.</th><th>Date</th><th>Dept.</th><th>Despatched to</th><th>Items / materials</th><th>Item status</th><th>Status</th><th>By</th></tr></thead><tbody>'
+ +a.map(p=>'<tr><td>'+esc(p.id)+'</td><td>'+esc(p.day)+'</td><td>'+esc(p.dept)+'</td><td>'+esc(p.to)+'</td><td>'+esc(itx(p))+'</td><td>'+esc(p.rt)+(p.rt==='For return'&&p.rd?' ('+esc(p.rd)+')':'')+'</td><td>'+esc(p.status)+'</td><td>'+esc(p.by)+'</td></tr>').join('')+'</tbody></table></body></html>'}
+
+function printHtml(html){
+ const f=document.createElement('iframe');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';document.body.appendChild(f);
+ f.srcdoc=html;f.onload=()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast('Printing is blocked here. Use Download PDF instead.')}setTimeout(()=>f.remove(),60000)}}
+
+async function doPrint(){
+ try{
+  if(S.view){const p=D.passes.find(x=>x.id===S.view);if(!p)return;printHtml(await passHtml(p))}
+  else if(S.tab==='recs'){printHtml(reportHtml(filt()))}
+  else window.print();
+  toast('Opening the print window. If nothing appears, use Download PDF.')
+ }catch(e){toast('Could not print. Use Download PDF instead.')}}
+
+/* ---------- PDF (works without a print dialog) ---------- */
+const san=t=>String(t==null?'':t).replace(/₱/g,'PHP ').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,'-').replace(/·/g,'|').replace(/[^\x20-\x7E\u00A0-\u00FF]/g,'?');
+function imgSize(u){return new Promise(r=>{const i=new Image();i.onload=()=>r([i.naturalWidth,i.naturalHeight]);i.onerror=()=>r(null);i.src=u})}
+async function pdfPass(p){
+ const J=window.jspdf&&window.jspdf.jsPDF;if(!J)throw new Error('pdf lib');
+ const d=new J({unit:'mm',format:'a4'}),W=210,M=14,CW=W-2*M;let y=M;
+ const T=(t,x,yy,o)=>d.text(san(t),x,yy,o);
+ const need=h=>{if(y+h>285){d.addPage();y=M}};
+ /* header */
+ try{const sz=await imgSize(LOGO_F);if(sz){const h=14;d.addImage(LOGO_F,'JPEG',M,y,h*sz[0]/sz[1],h)}}catch(e){}
+ const qr=await qrData(qrText(p));if(qr){try{d.addImage(qr,'PNG',W-M-32,y,32,32);d.setFontSize(7);d.setFont('helvetica','normal');T('Scan to check approval',W-M-16,y+35,{align:'center'})}catch(e){}}
+ y+=20;d.setFont('helvetica','bold');d.setFontSize(16);T('Electronic Gate Pass',M,y);y+=5;
+ d.setFont('helvetica','normal');d.setFontSize(9);T('Despatched at Tanauan Factory',M,y);y+=8;
+ d.setFontSize(8);T('E-Pass No.',M,y);y+=6;d.setFont('helvetica','bold');d.setFontSize(18);T(p.id,M,y);y+=6;
+ d.setFont('helvetica','normal');d.setFontSize(9);T('Status: '+p.status+'  |  '+p.rt+(p.rt==='For return'?', back by '+p.rd:''),M,y);y=Math.max(y+6,M+44);
+ const sec=t=>{need(14);d.setFont('helvetica','bold');d.setFontSize(10);T(t,M,y);d.setDrawColor(150);d.line(M,y+1.5,W-M,y+1.5);y+=6;d.setFont('helvetica','normal');d.setFontSize(9)};
+ const kv=(rows)=>{for(let i=0;i<rows.length;i+=2){const pair=rows.slice(i,i+2);let h=0;const parts=pair.map(r=>{const l=d.splitTextToSize(san(r[1]||'-'),CW/2-6);h=Math.max(h,l.length*4+4);return[r[0],l]});need(h);parts.forEach((pr,k)=>{const x=M+k*CW/2;d.setFontSize(7);d.setTextColor(100);T(pr[0].toUpperCase(),x,y);d.setTextColor(0);d.setFontSize(9);d.text(pr[1],x,y+4)});y+=h}};
+ sec('Pass details');
+ kv([['Date filed',p.at],['Requested by',p.by+' ('+p.dept+')'],['Despatched to',p.to],['Destination no.',p.no],['Receiver',(p.rc||'')+(p.rcc?' | '+p.rcc:'')],['Trucker / plate',(p.tr+' '+p.pl).trim()],['Order ref.',(p.on+' '+p.od).trim()],['Approved by',p.approver]]);
+ const R=Object.entries(p.refs||{}).filter(x=>x[1]);if(R.length){y+=2;sec('References');kv(R)}
+ y+=2;sec('Items / materials');
+ const cols=[[M,8,'#'],[M+8,70,'Description'],[M+78,30,'Other ref.'],[M+108,20,'Qty'],[M+128,20,'Unit'],[M+148,CW-148,'Amount (PHP)']];
+ const head=()=>{need(8);d.setFillColor(235,235,235);d.rect(M,y-4,CW,6,'F');d.setFont('helvetica','bold');cols.forEach(c=>T(c[2],c[0]+1,y));d.setFont('helvetica','normal');y+=5};
+ head();
+ p.items.forEach((i,n)=>{const v=[String(n+1),i.d,i.r,i.q,i.u,money(i.a)],L=v.map((t,k)=>d.splitTextToSize(san(t),cols[k][1]-2)),h=Math.max(...L.map(l=>l.length))*4+2;
+  if(y+h>285){d.addPage();y=M;head()}L.forEach((l,k)=>d.text(l,cols[k][0]+1,y));d.setDrawColor(200);d.line(M,y+h-3,W-M,y+h-3);y+=h});
+ need(8);d.setFont('helvetica','bold');T('Total',M+109,y);T(money(amt(p))||'-',M+149,y);d.setFont('helvetica','normal');y+=8;
+ kv([['Gross (kg)',String(p.gr||'')],['Tare (kg)',String(p.ta||'')],['Net (kg)',String(net(p)||'')],['Remarks',p.rm]]);
+ y+=2;sec('Approval trail');
+ p.log.forEach(l=>{const t=d.splitTextToSize(san(l.t+' | '+l.w+' | '+l.a+(l.n?' - '+l.n:'')),CW);need(t.length*4+1);d.text(t,M,y);y+=t.length*4});
+ need(40);y+=20;d.setDrawColor(0);d.line(M,y,M+75,y);d.line(M+100,y,W-M,y);d.setFontSize(8);
+ T('Approved by (Head / OIC)',M,y+4);if(p.approver){d.setFont('helvetica','bold');T(p.approver,M,y-2);d.setFont('helvetica','normal')}
+ d.text(d.splitTextToSize(san('Received above articles in good order and condition - Name, signature, date'),CW-100),M+100,y+4);
+ const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFontSize(7);d.setTextColor(120);T(stamp()+'  |  Page '+i+' of '+n,M,292);d.setTextColor(0)}
+ return d}
+async function pdfReport(a){
+ const J=window.jspdf&&window.jspdf.jsPDF;if(!J)throw new Error('pdf lib');
+ const d=new J({unit:'mm',format:'a4',orientation:'landscape'}),W=297,M=10,CW=W-2*M;let y=M+4;
+ d.setFont('helvetica','bold');d.setFontSize(13);d.text('Gate pass records - Tanauan Factory',M,y);y+=5;d.setFont('helvetica','normal');d.setFontSize(8);d.text(san(a.length+' record(s) | total declared value PHP '+money(a.reduce((s,p)=>s+amt(p),0))+' | '+stamp()),M,y);y+=6;
+ const cols=[['E-Pass No.',32],['Date',20],['Dept.',24],['Despatched to',46],['Items / materials',80],['Item status',28],['Status',20],['By',CW-250]];let xs=[],x=M;cols.forEach(c=>{xs.push(x);x+=c[1]});
+ const head=()=>{d.setFillColor(235,235,235);d.rect(M,y-4,CW,6,'F');d.setFont('helvetica','bold');cols.forEach((c,k)=>d.text(c[0],xs[k]+1,y));d.setFont('helvetica','normal');y+=5};head();
+ a.forEach(p=>{const v=[p.id,p.day,p.dept,p.to,itx(p),p.rt+(p.rt==='For return'&&p.rd?' ('+p.rd+')':''),p.status,p.by],L=v.map((t,k)=>d.splitTextToSize(san(t),cols[k][1]-2)),h=Math.max(...L.map(l=>l.length))*3.6+2;
+  if(y+h>200){d.addPage();y=M+4;head()}L.forEach((l,k)=>d.text(l,xs[k]+1,y));d.setDrawColor(210);d.line(M,y+h-3,W-M,y+h-3);y+=h});
+ return d}
+/* the sign-in screen was drawn before the logo layer loaded: draw it again */
+if(!U){try{render()}catch(e){}}
+async function doPdf(){
+ try{
+  let d,name;
+  if(S.view){const p=D.passes.find(x=>x.id===S.view);if(!p)return;d=await pdfPass(p);name=p.id+'.pdf'}
+  else if(S.tab==='recs'){const a=filt();d=await pdfReport(a);name='EGP-records-'+today()+'.pdf'}
+  else return;
+  if(await dl(name,d.output('blob'),'application/pdf'))toast('PDF ready: '+name)
+ }catch(e){toast('Could not create the PDF: '+(e&&e.message||'error'))}}
+
+</script>
+<script>if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>
+/* v15: loading screen, centred sign-in, help button, tour, richer help */
+(function(){const L=document.getElementById('ldr');if(!L)return;const im=document.getElementById('ldi'),m=document.getElementById('ldm'),a=document.getElementById('lda');
+try{im.src=LOGO_F}catch(e){}let t0=Date.now(),done=false,iv;
+const hide=()=>{if(done)return;done=true;clearInterval(iv);L.classList.add('x');setTimeout(()=>L.remove(),500)};
+document.getElementById('ldc').onclick=hide;
+iv=setInterval(()=>{if(done)return;const lv=document.getElementById('live'),tx=lv?lv.textContent:'';
+ if(navigator.onLine===false){L.classList.add('off');m.textContent='No internet connection. The system needs internet to show live records.';a.hidden=false;return}
+ if(L.classList.contains('off')){L.classList.remove('off');m.textContent='Loading E-Gate Pass…';a.hidden=true;t0=Date.now()}
+ if(/live|device/i.test(tx)){hide();return}
+ if(Date.now()-t0>8000){m.textContent='Still loading… please check your internet connection.';a.hidden=false}},300);
+window.addEventListener('online',()=>{t0=Date.now()})})();
+const _lv15=window.loginView;window.loginView=function(){_lv15();
+ const pw=document.getElementById('pw'),em=document.getElementById('em');
+ if(em){em.setAttribute('autocapitalize','off');em.setAttribute('autocorrect','off');em.setAttribute('inputmode','email');em.setAttribute('enterkeyhint','next')}
+ if(pw&&!pw.parentNode.classList.contains('pwwrap')){const w=document.createElement('span');w.className='pwwrap';pw.parentNode.insertBefore(w,pw);w.appendChild(pw);const b=document.createElement('button');b.type='button';b.className='eye';b.setAttribute('aria-label','Show or hide password');b.textContent='Show';b.onclick=()=>{const s=pw.type==='password';pw.type=s?'text':'password';b.textContent=s?'Hide':'Show'};w.appendChild(b)}};
+const _dl15=window.doLogin;window.doLogin=async function(){const b=document.querySelector('[data-a=login]');if(b){b.disabled=true;b.dataset.t=b.textContent;b.textContent='Signing in…'}
+ try{return await _dl15.apply(this,arguments)}finally{if(b&&b.isConnected){b.disabled=false;b.textContent=b.dataset.t||'Sign in'}}};
+const TOUR=[['Welcome to E-Gate Pass','This system records every item that leaves the factory. This short tour shows you where things are.'],['The tabs','The tabs under the logo are your main pages. On a phone, slide them left and right to see all of them.'],['Search','Use the search box to find a pass. Type the pass number, a name, a place or an item.'],['The ? button','Tap the round ? button at the bottom right at any time. It opens Help with simple steps.'],['Sign out','When you finish, tap Sign out at the top, especially on a shared phone or computer.']];
+function tour(i){i=i||0;let o=document.getElementById('tour');if(!o){o=document.createElement('div');o.id='tour';document.body.appendChild(o)}const s=TOUR[i],last=i===TOUR.length-1;
+ o.innerHTML='<div class="tb"><small>Step '+(i+1)+' of '+TOUR.length+'</small><h3>'+s[0]+'</h3><p>'+s[1]+'</p><div class="tr"><label><input type="checkbox" id="tnv"> Don’t show again</label><span><button class="btn o s" id="tsk">Skip</button> <button class="btn s" id="tnx">'+(last?'Done':'Next')+'</button></span></div></div>';
+ const end=()=>{try{if(document.getElementById('tnv').checked||last)localStorage.setItem('egate_tour','1')}catch(e){}o.remove()};
+ document.getElementById('tsk').onclick=end;document.getElementById('tnx').onclick=()=>last?end():tour(i+1)}
+document.addEventListener('click',e=>{if(e.target.closest('[data-tour]'))tour(0);if(e.target.closest('#hfab')){S.tab='help';S.view=null;render()}});
+const _r15=window.render;window.render=function(){_r15.apply(this,arguments);document.body.classList.toggle('is-login',!U);
+ if(U&&!document.getElementById('hfab')){const b=document.createElement('button');b.id='hfab';b.type='button';b.textContent='?';b.setAttribute('aria-label','Help');document.body.appendChild(b)}
+ let seen=0;try{seen=localStorage.getItem('egate_tour')}catch(e){}if(U&&!seen&&!window._tourShown){window._tourShown=1;setTimeout(()=>tour(0),700)}};
+const _h15=window.help;window.help=function(){const R=U?U.role:'Requester',G={
+Requester:['Tap “New pass”.','Choose the approver. Names that are greyed out are not available.','Type who the items are going to.','Add each item: what it is, how many, and the unit (for example 10 – box).','Choose “For return” if the items will come back. Choose “Not for return” if they will not.','Press “Submit for approval”.','Open “My passes” to see the status.','When the pass is Approved, open it and press “Download PDF” or “Print”. Give it to the driver.'],
+Approver:['Open “Approvals”. These are the passes waiting for you.','Tap a pass to open it.','Read the items, the quantity and where they are going.','Press Approve if everything is correct. Or reject it and write the reason.'],
+Security:['Open “Gate check”.','Scan the QR code on the pass, or type the pass number.','Check the items and the truck. They must match the pass.','Press the Release button. The items may leave.','When loaned items come back, scan the pass again and receive them.'],
+Admin:['Open “Users” to add a person. Choose their role and give a temporary password.','To reset a password, open the person and choose reset. They will choose a new one when they sign in.','Open “Records & reports” to search passes and download a PDF or CSV.','Open “Backup & integrity” and download a backup often.']}[R]||[];
+ const F=[['I forgot my password','Ask the system Admin to reset it. You will choose a new password when you sign in.'],['I cannot see my pass','Use the search box and type the pass number. Check you are signed in with your own account.'],['How do I print the pass?','Open the pass and press “Download PDF” or “Print”. If Print does nothing, use “Download PDF”.'],['How do I install the app on my phone?','Android: open the link in Chrome, tap the ⋮ menu, then “Install app”. iPhone: open it in Safari, tap Share, then “Add to Home Screen”. Computer: click the install icon at the end of the address bar.'],['The screen says no internet','The system needs internet to show live records. Check your Wi-Fi or mobile data. It will reload when the connection comes back.'],['I made a mistake on a pass','Tell your approver or the Admin. A wrong pass can be voided, then you make a new one.']];
+ const S2=[['Pending','Waiting for the approver.'],['Approved','The approver said yes. The items may go to the gate.'],['Released','Security let the items leave.'],['Returned','The loaned items came back.'],['Rejected','The approver said no. See the reason.'],['Voided','Cancelled. It cannot be used.']];
+ return '<div class="card"><h2>How to use the system: '+R+'</h2>'+G.map((t,i)=>'<div class="gd"><i>'+(i+1)+'</i><span>'+t+'</span></div>').join('')+'<p style="margin-top:12px"><button class="btn o s" data-tour="1">Show the welcome tour again</button></p></div>'
+ +'<div class="card"><h2>What does the status mean?</h2><div class="stl">'+S2.map(s=>'<div><b>'+s[0]+'</b><br>'+s[1]+'</div>').join('')+'</div></div>'
+ +'<div class="card faq"><h2>Questions and answers</h2><input id="hq" type="search" placeholder="Search help, for example: password"><div id="hl">'+F.map(f=>'<details><summary>'+f[0]+'</summary><p>'+f[1]+'</p></details>').join('')+'</div><p style="margin-top:12px"><b>Still need help?</b> Ask your department head or the system Admin.</p></div>'+_h15()};
+document.addEventListener('input',e=>{if(e.target.id!=='hq')return;const q=e.target.value.toLowerCase();document.querySelectorAll('#hl details').forEach(d=>{d.style.display=d.textContent.toLowerCase().includes(q)?'':'none'})});
+</script>
+</body></html>
